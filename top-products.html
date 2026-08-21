@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>去年热销 - 麦杞岐对接服务站</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">🔥</span>
+                <span class="logo-text">去年热销</span>
+            </div>
+            <a href="index.html" class="back-home-btn">← 返回首页</a>
+        </div>
+    </header>
+
+    <div class="top-notice" style="background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%); color: #ff6a00; padding: 12px 20px; text-align: center; font-size: 14px; border-bottom: 3px solid #ff6a00;">
+        ⚠️ 以下商品仅供款式参考，不可直接复制上架，如有侵权风险自行承担
+    </div>
+
+    <div class="tab-bar" id="categoryTabs">
+        <button class="tab-btn active" data-tab="外套夹克">🧥 外套夹克</button>
+        <button class="tab-btn" data-tab="衬衫亨利衫">👕 衬衫/亨利衫</button>
+    </div>
+
+    <div class="market-layout">
+        <aside class="market-sidebar" id="sidebar">
+            <h3 class="sidebar-title">区域导航</h3>
+            <div class="sidebar-section">
+                <div class="sidebar-item active" data-region="欧区" data-tab="外套夹克">🇪🇺 欧区 - 外套夹克</div>
+                <div class="sidebar-item" data-region="美区" data-tab="外套夹克">🇺🇸 美区 - 外套夹克</div>
+                <div class="sidebar-item" data-region="拉美" data-tab="外套夹克">🌎 拉美 - 外套夹克</div>
+            </div>
+            <div class="sidebar-section" style="display:none;" id="shirtSidebar">
+                <div class="sidebar-item" data-region="欧区" data-tab="衬衫亨利衫">🇪🇺 欧区 - 衬衫亨利衫</div>
+                <div class="sidebar-item" data-region="美区" data-tab="衬衫亨利衫">🇺🇸 美区 - 衬衫亨利衫</div>
+                <div class="sidebar-item" data-region="拉美" data-tab="衬衫亨利衫">🌎 拉美 - 衬衫亨利衫</div>
+            </div>
+        </aside>
+
+        <main class="market-main">
+            <div id="productGrid"></div>
+            <div id="loadingMsg" style="text-align:center; padding:40px; color:#999;">加载中...</div>
+        </main>
+    </div>
+
+    <!-- Image Modal -->
+    <div class="modal-overlay" id="imageModal" style="display:none;">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            <div class="modal-image-wrap">
+                <img id="modalImage" src="" alt="">
+            </div>
+            <div class="modal-info">
+                <button class="search-same-btn" onclick="searchSameProduct()">🔍 搜索识别图片同款</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <p>本网页所有功能只提供建议，不负任何法律责任，所有资源来源于互联网。</p>
+        <p>如有功能更新需求请联系 <strong>麦杞岐（maggie.xie）</strong></p>
+    </footer>
+
+    <script>
+        let allProducts = [];
+        let currentTab = '外套夹克';
+        let currentModalUrl = '';
+
+        async function loadData() {
+            try {
+                const resp = await fetch('data/top_products.json');
+                if (!resp.ok) throw new Error('fetch failed');
+                allProducts = await resp.json();
+                document.getElementById('loadingMsg').style.display = 'none';
+                renderProducts();
+            } catch(e) {
+                document.getElementById('loadingMsg').textContent = '数据加载失败，请确保 data/top_products.json 文件存在';
+                document.getElementById('loadingMsg').style.color = '#ff4444';
+            }
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('productGrid');
+            const filtered = allProducts.filter(p => p.category === currentTab);
+            
+            const regions = ['欧区', '美区', '拉美'];
+            let html = '';
+            
+            regions.forEach(region => {
+                const regionProducts = filtered.filter(p => p.region === region);
+                if (regionProducts.length === 0) return;
+                
+                html += `<div class="region-section" id="region-${currentTab}-${region}">`;
+                html += `<h2 class="region-title">${getRegionFlag(region)} ${region} <span class="region-count">(${regionProducts.length}款)</span></h2>`;
+                html += `<div class="top-product-grid">`;
+                
+                regionProducts.forEach((p, idx) => {
+                    if (!p.imageUrl) return;
+                    html += `<div class="top-product-card">`;
+                    html += `<div class="top-product-image" onclick="openModal('${p.imageUrl}')">`;
+                    html += `<img src="${p.imageUrl}" alt="商品图" loading="lazy" onerror="this.parentElement.style.display='none'">`;
+                    html += `</div>`;
+                    html += `</div>`;
+                });
+                
+                html += `</div></div>`;
+            });
+            
+            grid.innerHTML = html;
+        }
+
+        function getRegionFlag(region) {
+            const flags = {'欧区':'🇪🇺', '美区':'🇺🇸', '拉美':'🌎'};
+            return flags[region] || '';
+        }
+
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentTab = btn.dataset.tab;
+                
+                // Update sidebar
+                const jacketSidebar = document.querySelector('.sidebar-section:not(#shirtSidebar)');
+                if (currentTab === '外套夹克') {
+                    jacketSidebar.style.display = 'block';
+                    document.getElementById('shirtSidebar').style.display = 'none';
+                } else {
+                    jacketSidebar.style.display = 'none';
+                    document.getElementById('shirtSidebar').style.display = 'block';
+                }
+                
+                // Reset active sidebar item
+                document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+                const firstItem = document.querySelector(currentTab === '外套夹克' ? '.sidebar-section:not(#shirtSidebar) .sidebar-item' : '#shirtSidebar .sidebar-item');
+                if (firstItem) firstItem.classList.add('active');
+                
+                renderProducts();
+            });
+        });
+
+        // Sidebar navigation
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                const region = item.dataset.region;
+                const tab = item.dataset.tab;
+                const target = document.getElementById(`region-${tab}-${region}`);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Modal functions
+        function openModal(url) {
+            currentModalUrl = url;
+            document.getElementById('modalImage').src = url;
+            document.getElementById('imageModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+
+        function searchSameProduct() {
+            window.open('https://lens.google.com/uploadbyurl?url=' + encodeURIComponent(currentModalUrl), '_blank');
+        }
+
+        document.getElementById('imageModal').addEventListener('click', (e) => {
+            if (e.target.id === 'imageModal') closeModal();
+        });
+
+        loadData();
+    </script>
+</body>
+</html>
