@@ -46,6 +46,41 @@ body { background: #f5f5f5; }
     gap: 0;
     min-height: 600px;
 }
+/* 大板块Tab切换 - 类似企划需求 */
+.demand-tabs {
+    display: flex;
+    gap: 12px;
+    max-width: 1400px;
+    margin: 0 auto 20px;
+}
+.demand-tab {
+    flex: 1;
+    padding: 14px 24px;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.2s;
+    border: 2px solid #e0e0e0;
+    background: #fff;
+    color: #333;
+}
+.demand-tab.active {
+    background: #ff6a00;
+    color: #fff;
+    border-color: #ff6a00;
+}
+.demand-tab:hover:not(.active) {
+    border-color: #ff6a00;
+    color: #ff6a00;
+}
+.demand-panel {
+    display: block;
+}
+.demand-panel.hidden {
+    display: none;
+}
 .market-sidebar {
     width: 180px;
     background: #1a1a1a;
@@ -330,17 +365,43 @@ body { background: #f5f5f5; }
     声明：以上款式仅供参考，不可直接复制或侵权。本网页不负任何法律责任，所有资源来源于互联网。
 </div>
 
-<div class="market-layout">
-    <div class="market-sidebar">
-        <h3>区域导航</h3>
-        <a href="#region-eu" data-region="eu">🇪🇺 欧区</a>
-        <a href="#region-us" data-region="us">🇺🇸 美区</a>
-        <a href="#region-latam" data-region="latam">🌎 拉美</a>
-        <div class="sep"></div>
-        <a href="#top">↑ 回到顶部</a>
+<!-- 大板块切换：外套夹克 / 衬衫亨利衫 -->
+<div class="demand-tabs">
+    <div class="demand-tab active" data-tab="jacket" onclick="switchDemandTab('jacket')">🧥 外套夹克</div>
+    <div class="demand-tab" data-tab="shirt" onclick="switchDemandTab('shirt')">👕 衬衫/亨利衫</div>
+</div>
+
+<!-- 外套夹克面板 -->
+<div class="demand-panel" id="panel-demand-jacket">
+    <div class="market-layout">
+        <div class="market-sidebar">
+            <h3>区域导航</h3>
+            <a href="#jacket-region-eu" data-region="jacket-eu">🇪🇺 欧区</a>
+            <a href="#jacket-region-us" data-region="jacket-us">🇺🇸 美区</a>
+            <a href="#jacket-region-latam" data-region="jacket-latam">🌎 拉美</a>
+            <div class="sep"></div>
+            <a href="#jacket-top">↑ 回到顶部</a>
+        </div>
+        <div class="market-content" id="jacket-market-content">
+            <div class="loading">正在加载外套夹克数据...</div>
+        </div>
     </div>
-    <div class="market-content" id="market-content">
-        <div class="loading">正在加载市场需求数据...</div>
+</div>
+
+<!-- 衬衫/亨利衫面板 -->
+<div class="demand-panel hidden" id="panel-demand-shirt">
+    <div class="market-layout">
+        <div class="market-sidebar">
+            <h3>区域导航</h3>
+            <a href="#shirt-region-eu" data-region="shirt-eu">🇪🇺 欧区</a>
+            <a href="#shirt-region-us" data-region="shirt-us">🇺🇸 美区</a>
+            <a href="#shirt-region-latam" data-region="shirt-latam">🌎 拉美</a>
+            <div class="sep"></div>
+            <a href="#shirt-top">↑ 回到顶部</a>
+        </div>
+        <div class="market-content" id="shirt-market-content">
+            <div class="loading">正在加载衬衫/亨利衫数据...</div>
+        </div>
     </div>
 </div>
 
@@ -363,7 +424,9 @@ async function loadData() {
         allData = await resp.json();
         renderData();
     } catch(e) {
-        document.getElementById('market-content').innerHTML = 
+        document.getElementById('jacket-market-content').innerHTML = 
+            '<div class="loading" style="color:#f00;">数据加载失败，请确保 data/market_demand.json 文件存在</div>';
+        document.getElementById('shirt-market-content').innerHTML = 
             '<div class="loading" style="color:#f00;">数据加载失败，请确保 data/market_demand.json 文件存在</div>';
     }
 }
@@ -383,86 +446,101 @@ function copyText(text, btn) {
     });
 }
 
-function renderData() {
-    const content = document.getElementById('market-content');
-    const regions = [
-        { key: '欧区', id: 'region-eu', icon: '🇪🇺' },
-        { key: '美区', id: 'region-us', icon: '🇺🇸' },
-        { key: '拉美', id: 'region-latam', icon: '🌎' }
-    ];
-    const categories = [
-        { key: '外套夹克', label: '🧥 外套夹克' },
-        { key: '衬衫', label: '👔 衬衫/亨利衫' }
+// Tab切换
+function switchDemandTab(tab) {
+    document.querySelectorAll('.demand-tab').forEach(function(t) {
+        t.classList.toggle('active', t.dataset.tab === tab);
+    });
+    document.getElementById('panel-demand-jacket').classList.toggle('hidden', tab !== 'jacket');
+    document.getElementById('panel-demand-shirt').classList.toggle('hidden', tab !== 'shirt');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// 渲染单个面板数据
+function renderPanel(containerId, panelPrefix, categoryKey) {
+    var container = document.getElementById(containerId);
+    var panelData = allData.filter(function(d) { return d.category === categoryKey; });
+    
+    if (panelData.length === 0) {
+        container.innerHTML = '<div class="loading">暂无' + (categoryKey === '外套夹克' ? '外套夹克' : '衬衫/亨利衫') + '数据</div>';
+        return;
+    }
+    
+    var regions = [
+        { key: '欧区', id: panelPrefix + '-region-eu', icon: '🇪🇺' },
+        { key: '美区', id: panelPrefix + '-region-us', icon: '🇺🇸' },
+        { key: '拉美', id: panelPrefix + '-region-latam', icon: '🌎' }
     ];
 
-    let html = '<div id="top"></div>';
+    var html = '<div id="' + panelPrefix + '-top"></div>';
 
-    regions.forEach(region => {
-        const regionData = allData.filter(d => d.region === region.key);
+    regions.forEach(function(region) {
+        var regionData = panelData.filter(function(d) { return d.region === region.key; });
         if (regionData.length === 0) return;
+
+        // 按更新时间倒序排列
+        regionData.sort(function(a, b) {
+            var ta = a.updateTime || '';
+            var tb = b.updateTime || '';
+            return tb.localeCompare(ta);
+        });
 
         html += '<div class="region-section" id="' + region.id + '">';
         html += '<div class="region-title">' + region.icon + ' ' + region.key + ' <span class="badge">' + regionData.length + '款</span></div>';
+        html += '<div class="image-grid">';
 
-        categories.forEach(cat => {
-            const catData = regionData.filter(d => d.category === cat.key);
-            if (catData.length === 0) return;
+        regionData.forEach(function(item) {
+            var globalIdx = allData.indexOf(item);
+            var firstImg = (item.images && item.images.length > 0) ? item.images[0] : '';
+            var hasImg = !!firstImg;
 
-            html += '<div class="category-title">' + cat.label + '（' + catData.length + '款）</div>';
-            html += '<div class="image-grid">';
-
-            catData.forEach(function(item) {
-                var globalIdx = allData.indexOf(item);
-                var firstImg = (item.images && item.images.length > 0) ? item.images[0] : '';
-                var hasImg = !!firstImg;
-
-                html += '<div class="image-card" onclick="openModal(' + globalIdx + ')">';
-                html += '<div class="img-wrap">';
-                if (hasImg) {
-                    html += '<img src="' + escapeHtml(firstImg) + '" alt="商品图片" loading="lazy" onerror="this.parentElement.innerHTML=\'<div class=\\\'no-img\\\'>图片加载失败</div>\'">';
-                    html += '<div class="search-icon">🔍</div>';
-                } else {
-                    html += '<div class="no-img">暂无图片<br>点击查看链接</div>';
-                }
-                html += '</div>';
-                html += '<div class="info">';
-                html += '<div class="label">推荐类目路径</div>';
-                html += '<div class="value">' + escapeHtml(item.leafCategory || '-') + '</div>';
-                html += '<div class="label">款式编号</div>';
-                html += '<div class="value"><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + escapeHtml(item.industryId || '-') + '</span>';
-                if (item.industryId) {
-                    html += '<button class="copy-btn" onclick="event.stopPropagation();copyText(\'' + escapeHtml(item.industryId) + '\',this)">复制</button>';
-                }
-                html += '</div>';
-                html += '<div class="label">更新时间</div>';
-                html += '<div class="value time-value">' + escapeHtml(item.updateTime || '-') + '</div>';
-                html += '</div>';
-                html += '</div>';
-            });
-
+            html += '<div class="image-card" onclick="openModal(' + globalIdx + ')">';
+            html += '<div class="img-wrap">';
+            if (hasImg) {
+                html += '<img src="' + escapeHtml(firstImg) + '" alt="商品图片" loading="lazy" onerror="this.parentElement.innerHTML=\'<div class=\\\'no-img\\\'>图片加载失败</div>\'">';
+                html += '<div class="search-icon">🔍</div>';
+            } else {
+                html += '<div class="no-img">暂无图片<br>点击查看链接</div>';
+            }
+            html += '</div>';
+            html += '<div class="info">';
+            html += '<div class="label">推荐类目路径</div>';
+            html += '<div class="value">' + escapeHtml(item.leafCategory || '-') + '</div>';
+            html += '<div class="label">款式编号</div>';
+            html += '<div class="value"><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + escapeHtml(item.industryId || '-') + '</span>';
+            if (item.industryId) {
+                html += '<button class="copy-btn" onclick="event.stopPropagation();copyText(\'' + escapeHtml(item.industryId) + '\',this)">复制</button>';
+            }
+            html += '</div>';
+            html += '<div class="label">更新时间</div>';
+            html += '<div class="value time-value">' + escapeHtml(item.updateTime || '-') + '</div>';
+            html += '</div>';
             html += '</div>';
         });
 
         html += '</div>';
+        html += '</div>';
     });
 
-    content.innerHTML = html;
+    container.innerHTML = html;
+}
 
-    // Sidebar active state on scroll
-    var sidebarLinks = document.querySelectorAll('.market-sidebar a[data-region]');
-    var sections = document.querySelectorAll('.region-section');
-    window.addEventListener('scroll', function() {
-        var current = '';
-        sections.forEach(function(section) {
-            var rect = section.getBoundingClientRect();
-            if (rect.top <= 120) {
-                current = section.id;
-            }
-        });
-        sidebarLinks.forEach(function(link) {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === '#' + current) {
-                link.classList.add('active');
+function renderData() {
+    // 渲染外套夹克面板
+    renderPanel('jacket-market-content', 'jacket', '外套夹克');
+    // 渲染衬衫/亨利衫面板
+    renderPanel('shirt-market-content', 'shirt', '衬衫');
+    
+    // 绑定侧边栏导航点击
+    document.querySelectorAll('.market-sidebar a').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            var href = link.getAttribute('href');
+            if (href && href.startsWith('#')) {
+                e.preventDefault();
+                var target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
             }
         });
     });
@@ -499,9 +577,6 @@ function showModalImage() {
         var searchUrl = 'https://www.google.com/searchbyimage?image_url=' + encodeURIComponent(item.images[0]);
         infoHtml += '<br><a href="' + searchUrl + '" target="_blank" class="search-link">🔍 搜索识别图片同款</a>';
     }
-    if (item.link) {
-        infoHtml += ' <a href="' + escapeHtml(item.link) + '" target="_blank" class="search-link" style="background:#333;">📦 查看商品页面</a>';
-    }
 
     info.innerHTML = infoHtml;
     modal.classList.add('show');
@@ -527,19 +602,6 @@ document.addEventListener('keydown', function(e) {
 
 document.getElementById('img-modal').addEventListener('click', function(e) {
     if (e.target.id === 'img-modal') closeModal();
-});
-
-document.querySelectorAll('.market-sidebar a').forEach(function(link) {
-    link.addEventListener('click', function(e) {
-        var href = link.getAttribute('href');
-        if (href && href.startsWith('#')) {
-            e.preventDefault();
-            var target = document.querySelector(href);
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }
-    });
 });
 
 loadData();
