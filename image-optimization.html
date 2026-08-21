@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图片优化提示词中心 | 麦杞岐对接服务站</title>
+<style>
+:root{--orange:#ff6a00;--orange2:#e55a00;--bg:#f5f5f5;--card:#fff;--text:#1a1a1a;--muted:#777;--border:#e0e0e0;--tag:#fff5ed;--green:#2d8c3c;--red:#d93025}
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue","PingFang SC","Microsoft YaHei",Arial,sans-serif}
+body{background:var(--bg);color:var(--text);line-height:1.6;padding:16px;max-width:1500px;margin:auto}
+.header{background:#fff;border-radius:12px;padding:22px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.05);border-left:5px solid var(--orange)}
+.header h1{color:var(--orange);font-size:25px}.header p{color:#666;font-size:13px;margin-top:5px}
+.back{display:inline-block;margin-bottom:10px;color:var(--orange);cursor:pointer;font-size:13px}
+.layout{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}
+.card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.05);border:1px solid var(--border);margin-bottom:16px}
+.card h2{font-size:17px;color:var(--orange);margin-bottom:13px;display:flex;justify-content:space-between;align-items:center}
+.card h3{font-size:14px;margin:16px 0 8px}
+.notice{background:#fff5ed;border:1px solid #ffd0a0;border-radius:8px;padding:11px 13px;font-size:12px;color:#e55a00;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.field label{display:block;font-size:12px;font-weight:700;color:#555;margin-bottom:5px}
+select,input,textarea{width:100%;border:1px solid var(--border);border-radius:7px;padding:9px 10px;outline:none;font-size:13px;background:#fff}
+select:focus,input:focus,textarea:focus{border-color:var(--orange)}
+textarea{min-height:90px;resize:vertical;line-height:1.55}
+.option-row{display:flex;flex-wrap:wrap;gap:7px}
+.option{background:#f7f8fa;border:1px solid var(--border);padding:6px 9px;border-radius:16px;font-size:12px;cursor:pointer}
+.option.active{background:var(--tag);border-color:#ffaa66;color:#e55a00;font-weight:700}
+.checks{display:flex;flex-wrap:wrap;gap:7px}
+.check{display:flex;align-items:center;gap:5px;background:#fafafa;border:1px solid var(--border);border-radius:7px;padding:7px 9px;font-size:12px;cursor:pointer}
+.check input{width:auto}
+.preset-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.preset-tag{background:#f0f4f8;border:1px solid #d0d7de;color:#333;border-radius:12px;padding:3px 8px;font-size:11px;cursor:pointer}
+.preset-tag:hover{background:var(--tag);border-color:#ffaa66;color:#e55a00}
+.module-preset{background:#f8f9fa;border:1px solid var(--border);border-radius:8px;padding:8px 10px;margin-bottom:12px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.module-preset input{flex:1;min-width:120px;padding:6px 8px;font-size:12px}
+.module-preset select{flex:1;min-width:140px;padding:6px 8px;font-size:12px}
+.module-preset button{padding:6px 10px;font-size:12px;border-radius:6px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+button{border:0;border-radius:7px;padding:9px 14px;font-weight:700;font-size:13px;cursor:pointer}
+.primary{background:var(--orange);color:#fff}.primary:hover{background:var(--orange2)}
+.secondary{background:#eef0f2;color:#333}.danger{background:#fff0f0;color:var(--red)}
+.result{position:sticky;top:12px}
+.prompt{background:#1a1a1a;color:#f0f0f0;border-radius:9px;padding:15px;min-height:260px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;white-space:pre-wrap;word-break:break-word}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.chip{background:var(--tag);border:1px solid #ffd0a0;color:#e55a00;border-radius:15px;padding:4px 8px;font-size:11px}
+.stats{font-size:12px;color:#777;margin-top:9px}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.feature{background:#fafafa;border:1px solid var(--border);padding:10px;border-radius:8px}
+.feature b{font-size:12px}.feature p{font-size:11px;color:#777;margin-top:3px}
+.footer{text-align:center;color:#888;font-size:11px;padding:15px}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.result{position:static}.feature-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){body{padding:10px}.grid{grid-template-columns:1fr}.feature-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="header">
+  <a href="index.html" class="back-home-btn">← 返回首页</a>
+  <h1>🖼️ 图片优化提示词中心</h1>
+  <p>不直接生成图片：根据商品特征组合出可复制的 AI 视觉优化 Prompt，商家可用于 ChatGPT / Gemini / Midjourney / 即梦 / 可灵等图像工具。</p>
+</div>
+
+<div class="notice">
+<b>使用原则：</b>先保证"商品不变"，再优化"环境、灯光、构图、模特、场景"。本页面把平台合规要求与跨平台视觉趋势分开处理，避免把"爆款特征"误当成平台硬性规则。
+</div>
+
+<div class="layout">
+<section>
+
+<!-- 模块①：定义商品 -->
+<div class="card">
+<h2>① 先定义商品</h2>
+<div class="module-preset">
+  <select id="presetList_m1"><option value="">-- 选择商品定义预设 --</option></select>
+  <button class="secondary" id="btnLoad_m1">加载</button>
+  <button class="danger" id="btnDel_m1" style="padding:6px 8px;">✕</button>
+  <input id="presetName_m1" placeholder="预设命名 (如: 商务衬衫组)">
+  <button class="primary" id="btnSave_m1">💾 保存</button>
+</div>
+
+<div class="grid">
+<div class="field"><label>平台</label><select id="platform"></select></div>
+<div class="field"><label>图片类型</label><select id="imageType"></select></div>
+<div class="field"><label>男装品类</label><select id="category"></select></div>
+<div class="field"><label>视觉风格</label><select id="style"></select></div>
+</div>
+
+<h3>商品已有卖点（可多选）</h3>
+<div class="checks" id="sellingPoints"></div>
+
+<h3>你希望 AI 做什么？</h3>
+<div class="option-row" id="taskOptions">
+  <span class="option" data-task="retouch">修图增强</span>
+  <span class="option active" data-task="background">更换背景</span>
+  <span class="option" data-task="model">真人上身</span>
+  <span class="option" data-task="lifestyle">生成场景</span>
+  <span class="option" data-task="detail">强化细节</span>
+  <span class="option" data-task="complete">整套图规划</span>
+</div>
+</div>
+
+<!-- 模块②：视觉语言与模特细节 -->
+<div class="card">
+<h2>② 选择视觉语言与模特细节</h2>
+<div class="module-preset">
+  <select id="presetList_m2"><option value="">-- 选择视觉/模特预设 --</option></select>
+  <button class="secondary" id="btnLoad_m2">加载</button>
+  <button class="danger" id="btnDel_m2" style="padding:6px 8px;">✕</button>
+  <input id="presetName_m2" placeholder="预设命名 (如: 欧美商务成熟风)">
+  <button class="primary" id="btnSave_m2">💾 保存</button>
+</div>
+
+<div class="grid">
+<div class="field"><label>背景</label><select id="background"></select></div>
+<div class="field"><label>灯光</label><select id="lighting"></select></div>
+<div class="field"><label>镜头</label><select id="camera"></select></div>
+<div class="field"><label>构图</label><select id="composition"></select></div>
+<div class="field"><label>模特类型</label><select id="model"></select></div>
+<div class="field"><label>模特人种/肤色</label><select id="modelEthnicity"></select></div>
+<div class="field"><label>模特年龄段</label><select id="modelAge"></select></div>
+<div class="field"><label>模特姿势风格</label><select id="modelPose"></select></div>
+<div class="field" style="grid-column: span 2;"><label>输出比例</label>
+<select id="ratio">
+<option value="1:1" selected>1:1 方图</option>
+<option value="4:5">4:5 竖图</option>
+<option value="3:4">3:4 竖图</option>
+<option value="16:9">16:9 横图</option>
+</select>
+</div>
+</div>
+
+<h3>补充商品信息</h3>
+<input id="productInfo" value="男士长袖商务衬衫，翻领，纽扣门襟，修身版型">
+</div>
+
+<!-- 模块③：AI生成控制 -->
+<div class="card">
+<h2>③ AI 生成控制</h2>
+<div class="module-preset">
+  <select id="presetList_m3"><option value="">-- 选择生成控制预设 --</option></select>
+  <button class="secondary" id="btnLoad_m3">加载</button>
+  <button class="danger" id="btnDel_m3" style="padding:6px 8px;">✕</button>
+  <input id="presetName_m3" placeholder="预设命名 (如: 严禁改Logo+美式写实)">
+  <button class="primary" id="btnSave_m3">💾 保存</button>
+</div>
+
+<div class="field">
+<label>保留原图的关键元素</label>
+<textarea id="preserve">严格保持商品原本的设计、颜色、版型、Logo标识、印花、标签、面料材质纹理、比例及所有功能性细节不变。</textarea>
+<div class="preset-tags" id="preservePresets">
+  <span class="preset-tag" data-val="严格保持商品原本的设计、颜色、版型、Logo标识、印花、标签、面料材质纹理、比例及所有功能性细节不变。">默认（完全保留原商品）</span>
+  <span class="preset-tag" data-val="保持服装整体版型与材质纹理不变，仅替换商品背景与拍摄环境。">仅保留服装结构与质感</span>
+  <span class="preset-tag" data-val="重点确保品牌Logo、口袋布局、拉链位置与排布与原商品完全一致。">强调保留Logo与细节结构</span>
+</div>
+</div>
+
+<div class="field" style="margin-top:12px">
+<label>额外要求</label>
+<textarea id="extra">整体呈现自然真实的美式年轻审美与高品质电商视觉质感，切忌过度浮夸的后期修饰。</textarea>
+<div class="preset-tags" id="extraPresets">
+  <span class="preset-tag" data-val="整体呈现自然真实的美式年轻审美与高品质电商视觉质感，切忌过度浮夸的后期修饰。">默认（美式自然质感）</span>
+  <span class="preset-tag" data-val="呈现极简高奢高级棚拍感，强调柔和自然的光影与干净无瑕的背景。">高奢棚拍风</span>
+  <span class="preset-tag" data-val="展现真实户外阳光感与动态生活方式，保持模特自然有精气神，避免生硬的假人感。">户外阳光生活风</span>
+</div>
+</div>
+
+<div class="actions">
+<button class="primary" id="btnGenerate">✨ 生成优化 Prompt</button>
+<button class="danger" id="btnReset">↺ 重置全板</button>
+</div>
+</div>
+</section>
+
+<aside class="result">
+<div class="card">
+<h2>④ 可直接复制给 AI</h2>
+<div class="prompt" id="prompt">请选择商品特征后点击「生成优化 Prompt」。</div>
+<div class="chips" id="chips"></div>
+<div class="stats" id="stats">当前：待生成</div>
+<div class="actions" style="margin-top:14px">
+  <button class="primary" id="btnCopy" style="width:100%;padding:11px;font-size:14px">📋 复制 Prompt</button>
+</div>
+</div>
+
+<div class="card">
+<h2>⑤ 爆款视觉应该如何</h2>
+<div class="feature-grid">
+<div class="feature"><b>商品主体清晰</b><p>缩略图状态下也能迅速识别品类、轮廓和颜色。</p></div>
+<div class="feature"><b>第一张图低干扰</b><p>主图优先商品本身，减少抢视觉焦点的道具和复杂背景。</p></div>
+<div class="feature"><b>真人上身证明版型</b><p>用真实人体比例帮助消费者判断长度、宽松度和穿着效果。</p></div>
+<div class="feature"><b>多角度补信息</b><p>正面、侧面、背面、45°和细节图分别解决不同疑问。</p></div>
+<div class="feature"><b>功能必须可视化</b><p>口袋、拉链、反光条、面料纹理等要用近景证据表达。</p></div>
+<div class="feature"><b>场景服务于商品</b><p>通勤、商务、户外等背景要强化使用场景，而不是喧宾夺主。</p></div>
+</div>
+</div>
+</aside>
+</div>
+
+<div class="card">
+<h2>⑥ 平台视觉策略说明</h2>
+<div id="platformStrategy"></div>
+</div>
+
+<div class="footer">麦杞岐对接服务站 · Image Optimization Prompt Library · 2026</div>
+
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  const DATA = {
+    "platforms": [{"id":"temu","name":"TEMU","desc":"优先清晰、真实、突出商品；主图强调第一眼识别，详情图承担场景与卖点表达。"},{"id":"amazon","name":"Amazon","desc":"主图合规优先：白底、真实商品、无额外文字/水印；服装重点展示版型与商品本体。"},{"id":"shein","name":"SHEIN","desc":"兼顾商品展示与时尚感；支持方图/竖图、多角度及真人上身/使用场景。"}],
+    "imageTypes": [{"id":"main","name":"主图 / 首图","goal":"提高列表页识别度与点击欲望"},{"id":"detail","name":"卖点图","goal":"把材质、版型、功能转化为可视化证据"},{"id":"lifestyle","name":"场景图","goal":"让消费者快速理解穿着场景与生活方式"},{"id":"model","name":"真人上身图","goal":"展示版型、比例、穿着效果"},{"id":"detail_close","name":"细节特写","goal":"放大面料、拉链、口袋、缝线、功能结构"},{"id":"comparison","name":"对比/信息图","goal":"用视觉层级表达功能差异或尺码信息"}],
+    "categories": [
+      {"id":"shirt","name":"男士衬衫 / 衬衫","keywords":["men's shirt","dress shirt","casual shirt","button-up shirt","formal shirt"]},
+      {"id":"henley","name":"男士亨利衫 / 亨利领","keywords":["men's henley shirt","henley neck shirt","long sleeve henley","cotton henley"]},
+      {"id":"jacket","name":"男士外套夹克 / 夹克","keywords":["men's jacket","men's outerwear","casual jacket","utility jacket","bomber jacket"]},
+      {"id":"leather","name":"皮衣夹克 / 人造皮夹克","keywords":["men's leather jacket","faux leather jacket","pu leather jacket","men's leather coat"]},
+      {"id":"workwear","name":"工装夹克 / 工装衬衫","keywords":["men's work jacket","cargo jacket","workwear shirt","utility jacket"]},
+      {"id":"sport","name":"运动风外套 / 派克 / 棉服","keywords":["men's sports jacket","puffer jacket","parka","athletic jacket","track jacket"]},
+      {"id":"fleece","name":"抓绒夹克 / 摇粒绒","keywords":["men's fleece jacket","fleece outerwear","polar fleece","fleece pullover"]},
+      {"id":"business_shirt","name":"商务衬衫 / 正装衬衫","keywords":["men's dress shirt","business shirt","formal shirt","oxford shirt","slim fit dress shirt"]},
+      {"id":"casual_shirt","name":"休闲衬衫 / 古巴领衬衫","keywords":["men's casual shirt","cuban collar shirt","vacation shirt","linen shirt","resort shirt"]},
+      {"id":"other","name":"其他男装上衣","keywords":["men's apparel","men's top","menswear","men's fashion"]}
+    ],
+    "styles": [
+      {"id":"clean","name":"高级极简","prompt":"干净的高级电商美学，简洁的画面构图，精致的整体造型"},
+      {"id":"business","name":"商务正装","prompt":"专业商务正装美学，干净利落的剪裁展示，沉稳大气的商业摄影风格"},
+      {"id":"sport","name":"运动机能","prompt":"专业运动机能风，富有张力且可控的专业运动构图"},
+      {"id":"street","name":"城市街头","prompt":"现代城市街头美学，自然随性的服装展示状态"},
+      {"id":"outdoor","name":"户外探索","prompt":"真实自然户外生活方式，带有功能性与探索氛围"},
+      {"id":"vintage","name":"复古工装","prompt":"复古工装美学，带有做旧质感与粗犷的自然穿搭氛围"},
+      {"id":"resort","name":"度假休闲","prompt":"轻松惬意的度假生活风格，明亮自然的氛围，随性穿搭"},
+      {"id":"y2k","name":"Y2K / 年轻潮流","prompt":"充满年轻活力的复古Y2K潮流风格，富有动感的时尚摄影"}
+    ],
+    "backgrounds": [
+      {"id":"white","name":"纯白电商背景","prompt":"纯白色无缝纯净背景，标准无瑕影棚布景"},
+      {"id":"lightgray","name":"浅灰棚拍","prompt":"柔和浅灰色无缝影棚背景"},
+      {"id":"studio","name":"高级摄影棚","prompt":"极简高级商业摄影棚环境，带有可控的柔和光影"},
+      {"id":"urban","name":"城市街景","prompt":"干净现代的城市建筑环境，带有优雅的建筑线条背景"},
+      {"id":"office","name":"商务办公场景","prompt":"现代简约的商务办公环境，带有专业的职场氛围"},
+      {"id":"gym","name":"健身房","prompt":"现代干净的室内健身房环境，真实的运动训练氛围"},
+      {"id":"outdoor_scene","name":"户外山地","prompt":"真实的户外山野环境，自然明亮的光照"},
+      {"id":"beach","name":"海边度假","prompt":"明亮的海滨度假场景，自然充沛的阳光"}
+    ],
+    "lighting": [
+      {"id":"soft","name":"柔和商业光","prompt":"柔和漫反射商业柔光，均衡的高光与自然过渡的阴影"},
+      {"id":"daylight","name":"自然日光","prompt":"明亮的自然日光，真实还原皮肤与面料材质色泽"},
+      {"id":"highkey","name":"高调明亮","prompt":"高调明亮的商业照明，干净的调性，清晰抠图般的商品主体"},
+      {"id":"contrast","name":"立体对比","prompt":"带有方向感的可控光影，凸显服装立体质感与轮廓"}
+    ],
+    "camera": [
+      {"id":"front","name":"正面平视","prompt":"正前方平视视角，对称且清晰展示商品整体形态"},
+      {"id":"45","name":"45°视角","prompt":"干净的45度视角，同时展示服装正面与侧面的结构细节"},
+      {"id":"fullbody","name":"全身上身","prompt":"全身/半身时尚构图，清晰完整地呈现服装版型剪裁"},
+      {"id":"close","name":"近距离细节","prompt":"近距离微距摄影，锐利清晰的面料纹理与做工细节"},
+      {"id":"dynamic","name":"运动动态","prompt":"自然流畅的运动姿态，服装主体依然清晰无模糊"}
+    ],
+    "models": [
+      {"id":"neutral","name":"自然男性模特","prompt":"成年男性模特，面部表情自然，身体姿态放松且自信"},
+      {"id":"athletic","name":"运动型男性模特","prompt":"身材健硕的成年男性模特，比例真实自然，呈专业运动姿态"},
+      {"id":"business_male","name":"商务型男性模特","prompt":"成熟稳重的成年男性模特，穿着合身得体，展现商务精英气质"},
+      {"id":"streetmale","name":"年轻街头男性模特","prompt":"年轻时尚的男性模特，带有真实有型的街头态度"},
+      {"id":"no_model","name":"不使用模特","prompt":"不使用任何真人模特，仅展示服装商品本身"}
+    ],
+    "modelEthnicities": [
+      {"id":"caucasian","name":"欧美/白人模特","prompt":"白人/欧美特征模特"},
+      {"id":"latino","name":"拉丁/小麦色模特","prompt":"拉丁裔/健康小麦肤色模特"},
+      {"id":"black","name":"非裔/黑人模特","prompt":"非裔/黑人模特"},
+      {"id":"asian","name":"东亚/亚裔模特","prompt":"东亚/亚裔特征模特"},
+      {"id":"mixed","name":"混血感模特","prompt":"混血感时尚模特"}
+    ],
+    "modelAges": [
+      {"id":"young","name":"青年 (20-25岁)","prompt":"20-25岁充满青春活力的年轻男模"},
+      {"id":"adult","name":"青壮年 (25-35岁)","prompt":"25-35岁成熟自信的青壮年男模"},
+      {"id":"middle","name":"熟男 (35-45岁)","prompt":"35-45岁沉稳有型的高级感熟男模特"}
+    ],
+    "modelPoses": [
+      {"id":"standing","name":"自然站姿","prompt":"放松自然的站立姿态，双臂自然下垂或手插口袋，完整展现服装"},
+      {"id":"walking","name":"行进动态","prompt":"自然迈步前行的抓拍姿态，展现服装在动态下的流线与悬垂感"},
+      {"id":"sitting","name":"休闲坐姿","prompt":"随性舒适的坐姿，呈现轻松的休闲穿搭氛围"},
+      {"id":"business_pose","name":"商务姿态","prompt":"专业自信的商务站姿，一手插兜或手持公文包，展现正装得体感"},
+      {"id":"looking_away","name":"侧面/不看镜头","prompt":"眼神微向侧方倾斜，带有商业杂志硬照的自然氛围感"}
+    ],
+    "sellingPoints": [
+      {"id":"quickdry","name":"速干","prompt":"通过轻盈的面料质感与运动场景，直观呈现卓越的速干透气性能"},
+      {"id":"breathable","name":"透气","prompt":"通过轻薄面料的悬垂感与户外环境，直观展现面料的透气呼吸感"},
+      {"id":"stretch","name":"弹力","prompt":"在不拉伸变形商品的前提下，展现面料自然的高弹力与活动舒适度"},
+      {"id":"water","name":"防泼水","prompt":"水珠在面料表面呈圆润珠状滑落的微观细节，展现真实防泼水性能"},
+      {"id":"warm","name":"保暖","prompt":"通过质感饱满的面料与秋冬场景，直观表达良好的保暖防风效果"},
+      {"id":"pockets","name":"多口袋","prompt":"清晰突出展示多功能口袋的位置布局、容量与实用收纳细节"},
+      {"id":"zipper","name":"拉链结构","prompt":"近景特写呈现高质量拉链做工、平整的缝线与精致的边缘处理"},
+      {"id":"reflective","name":"反光细节","prompt":"在特定光线照射下，清晰呈现服装上的反光条与夜间安全设计细节"},
+      {"id":"lightweight","name":"轻量","prompt":"通过轻盈的飘逸感与干净俐落的剪裁，展现极致轻薄无负担的穿感"},
+      {"id":"oversized","name":"宽松版型","prompt":"清晰展示宽松时尚的落肩版型与自然的面料悬垂褶皱"},
+      {"id":"slim","name":"修身版型","prompt":"清晰展现贴合人体工学剪裁的修身线条与干练体型"},
+      {"id":"wrinkle_free","name":"免烫","prompt":"通过面料的平整质感与日常穿着场景，直观展现免烫抗皱性能"},
+      {"id":"collar","name":"领型细节","prompt":"近景特写展示精致领型结构，翻领/立领/亨利领的做工与版型"},
+      {"id":"button","name":"纽扣门襟","prompt":"清晰展示高质量纽扣与门襟的精细做工，呈现衬衫的品质感"}
+    ],
+    "composition": [
+      {"id":"productfirst","name":"商品优先","prompt":"商品作为绝对的视觉核心，背景与搭配仅作衬托不抢眼"},
+      {"id":"center","name":"中心构图","prompt":"干净的居中构图，留有舒适的视觉呼吸感，第一眼辨识度极高"},
+      {"id":"thirds","name":"三分法","prompt":"经典九宫格三分法构图，具备清晰的视觉层级与自然留白"},
+      {"id":"detailgrid","name":"主图+细节组合","prompt":"以一个主视觉视角为主，辅以精致的局部细节展现"},
+      {"id":"motion","name":"动作叙事","prompt":"带有真实动作叙事感的画面构图，展示服装在实际穿着中的效果"}
+    ],
+    "negative": ["严禁改变原商品的原本设计与剪裁","严禁修改服装颜色或产生色差","严禁修改、添加或删除原本的Logo、印花、图案及标签","严禁凭空虚构不存在的口袋、拉链或功能细节","严禁改变面料材质与纹理表现","禁止出现畸形的手部、肢体或不协调的人体结构","禁止多余的手指或多余肢体","禁止重复出现多个相同的商品","禁止悬浮不合常理的物品","禁止出现水印、无关文字或印章","禁止添加虚假的电商标签或平台 Logo","禁止过度HDR或饱和度过高的浮光色彩","禁止塑料感严重的面料质感","禁止不自然的AI假皮皮肤","禁止杂乱抢眼的背景干扰"]
+  };
+
+  const CATEGORY_MAP = {
+    platform:'platforms', imageType:'imageTypes', category:'categories',
+    style:'styles', background:'backgrounds', lighting:'lighting',
+    camera:'camera', composition:'composition', model:'models',
+    modelEthnicity:'modelEthnicities', modelAge:'modelAges', modelPose:'modelPoses'
+  };
+
+  const DEFAULTS = {
+    platform:'temu', imageType:'main', category:'shirt', style:'clean',
+    background:'white', lighting:'soft', camera:'front', composition:'productfirst',
+    model:'neutral', modelEthnicity:'caucasian', modelAge:'adult', modelPose:'standing',
+    sellingPoints:['wrinkle_free','slim']
+  };
+
+  const $ = id => document.getElementById(id);
+  const fill = (id, arr, defaultId) => {
+    if ($(id) && Array.isArray(arr)) {
+      $(id).innerHTML = arr.map(x=>`<option value="${x.id}" ${x.id===defaultId?'selected':''}>${x.name}</option>`).join('');
+    }
+  };
+  const selected = id => {
+    const dataKey = CATEGORY_MAP[id] || id;
+    const list = DATA[dataKey] || [];
+    const el = $(id);
+    if (!el) return { id:'', name:'', prompt:'' };
+    return list.find(x => x.id === el.value) || list[0] || { id:'', name:'', prompt:'' };
+  };
+
+  fill('platform', DATA.platforms, DEFAULTS.platform);
+  fill('imageType', DATA.imageTypes, DEFAULTS.imageType);
+  fill('category', DATA.categories, DEFAULTS.category);
+  fill('style', DATA.styles, DEFAULTS.style);
+  fill('background', DATA.backgrounds, DEFAULTS.background);
+  fill('lighting', DATA.lighting, DEFAULTS.lighting);
+  fill('camera', DATA.camera, DEFAULTS.camera);
+  fill('composition', DATA.composition, DEFAULTS.composition);
+  fill('model', DATA.models, DEFAULTS.model);
+  fill('modelEthnicity', DATA.modelEthnicities, DEFAULTS.modelEthnicity);
+  fill('modelAge', DATA.modelAges, DEFAULTS.modelAge);
+  fill('modelPose', DATA.modelPoses, DEFAULTS.modelPose);
+
+  if ($('sellingPoints')) {
+    $('sellingPoints').innerHTML = DATA.sellingPoints.map(x =>
+      `<label class="check"><input type="checkbox" value="${x.id}" ${DEFAULTS.sellingPoints.includes(x.id)?'checked':''}> ${x.name}</label>`).join('');
+  }
+
+  document.querySelectorAll('#taskOptions .option').forEach(el=>{
+    el.onclick=()=>{
+      document.querySelectorAll('#taskOptions .option').forEach(x=>x.classList.remove('active'));
+      el.classList.add('active');
+    }
+  });
+
+  document.querySelectorAll('#preservePresets .preset-tag').forEach(tag => {
+    tag.onclick = () => $('preserve').value = tag.dataset.val;
+  });
+  document.querySelectorAll('#extraPresets .preset-tag').forEach(tag => {
+    tag.onclick = () => $('extra').value = tag.dataset.val;
+  });
+
+  function getModulePresets(moduleKey) {
+    try { return JSON.parse(localStorage.getItem('PRESET_'+moduleKey)) || {}; }
+    catch(e) { return {}; }
+  }
+  function updateModuleDropdown(moduleKey) {
+    const presets = getModulePresets(moduleKey);
+    const select = $('presetList_'+moduleKey);
+    if(!select) return;
+    select.innerHTML = `<option value="">-- 选择预设配置 --</option>`;
+    Object.keys(presets).forEach(name => {
+      const opt = document.createElement('option');
+      opt.value = name; opt.textContent = name;
+      select.appendChild(opt);
+    });
+  }
+  function setupModuleStorage(moduleKey, getModuleData, applyModuleData) {
+    const btnSave = $('btnSave_'+moduleKey);
+    const btnLoad = $('btnLoad_'+moduleKey);
+    const btnDel  = $('btnDel_'+moduleKey);
+    if (btnSave) {
+      btnSave.onclick = () => {
+        const name = $('presetName_'+moduleKey).value.trim();
+        if(!name) return alert('请填写预设名称！');
+        const data = getModuleData();
+        const presets = getModulePresets(moduleKey);
+        presets[name] = data;
+        localStorage.setItem('PRESET_'+moduleKey, JSON.stringify(presets));
+        updateModuleDropdown(moduleKey);
+        $('presetList_'+moduleKey).value = name;
+        alert(`模块预设「${name}」保存成功！`);
+      };
+    }
+    if (btnLoad) {
+      btnLoad.onclick = () => {
+        const name = $('presetList_'+moduleKey).value;
+        if(!name) return alert('请先选择要加载的预设！');
+        const presets = getModulePresets(moduleKey);
+        if(!presets[name]) return alert('预设不存在！');
+        applyModuleData(presets[name]);
+        alert(`预设「${name}」加载完成！`);
+      };
+    }
+    if (btnDel) {
+      btnDel.onclick = () => {
+        const name = $('presetList_'+moduleKey).value;
+        if(!name) return alert('请先选择要删除的预设！');
+        if(!confirm(`确定要删除预设「${name}」吗？`)) return;
+        const presets = getModulePresets(moduleKey);
+        delete presets[name];
+        localStorage.setItem('PRESET_'+moduleKey, JSON.stringify(presets));
+        updateModuleDropdown(moduleKey);
+        alert('删除成功！');
+      };
+    }
+    updateModuleDropdown(moduleKey);
+  }
+
+  setupModuleStorage('m1',
+    () => ({
+      platform: $('platform').value, imageType: $('imageType').value,
+      category: $('category').value, style: $('style').value,
+      task: document.querySelector('#taskOptions .option.active')?.dataset.task || 'background',
+      sellingPoints: [...document.querySelectorAll('#sellingPoints input:checked')].map(x => x.value)
+    }),
+    (data) => {
+      if(data.platform) $('platform').value = data.platform;
+      if(data.imageType) $('imageType').value = data.imageType;
+      if(data.category) $('category').value = data.category;
+      if(data.style) $('style').value = data.style;
+      if(data.task) {
+        document.querySelectorAll('#taskOptions .option').forEach(el => {
+          el.classList.toggle('active', el.dataset.task === data.task);
+        });
+      }
+      if(Array.isArray(data.sellingPoints)) {
+        document.querySelectorAll('#sellingPoints input').forEach(x => {
+          x.checked = data.sellingPoints.includes(x.value);
+        });
+      }
+      renderStrategy();
+    }
+  );
+
+  setupModuleStorage('m2',
+    () => ({
+      background: $('background').value, lighting: $('lighting').value,
+      camera: $('camera').value, composition: $('composition').value,
+      model: $('model').value, modelEthnicity: $('modelEthnicity').value,
+      modelAge: $('modelAge').value, modelPose: $('modelPose').value,
+      ratio: $('ratio').value, productInfo: $('productInfo').value
+    }),
+    (data) => {
+      if(data.background) $('background').value = data.background;
+      if(data.lighting) $('lighting').value = data.lighting;
+      if(data.camera) $('camera').value = data.camera;
+      if(data.composition) $('composition').value = data.composition;
+      if(data.model) $('model').value = data.model;
+      if(data.modelEthnicity) $('modelEthnicity').value = data.modelEthnicity;
+      if(data.modelAge) $('modelAge').value = data.modelAge;
+      if(data.modelPose) $('modelPose').value = data.modelPose;
+      if(data.ratio) $('ratio').value = data.ratio;
+      if(data.productInfo !== undefined) $('productInfo').value = data.productInfo;
+    }
+  );
+
+  setupModuleStorage('m3',
+    () => ({ preserve: $('preserve').value, extra: $('extra').value }),
+    (data) => {
+      if(data.preserve !== undefined) $('preserve').value = data.preserve;
+      if(data.extra !== undefined) $('extra').value = data.extra;
+    }
+  );
+
+  function platformRules(){
+   const pVal = $('platform') ? $('platform').value : 'temu';
+   if(pVal === 'amazon') return '遵循 Amazon 平台主图合规要求：主图必须使用纯白背景（#FFFFFF），完美展现真实商品本体，绝对严禁添加任何额外文字、Logo、水印或装饰边框。服装类目重点突出版型与面料剪裁。';
+   if(pVal === 'shein') return '符合 SHEIN 平台审美风格：保证商品细节精准还原，采用精致的高清方图或竖图呈现，展示多角度细节，优先推荐真人模特上身效果，保持服装为主体。';
+   return '符合 TEMU 平台视觉策略：优先保证商品的第一眼高辨识度，真实还原商品结构与面料，通过规范的图片序列清晰展现产品细节与使用场景，严禁虚构不存在的产品卖点。';
+  }
+
+  function generatePrompt(){
+   const p=selected('platform'), t=selected('imageType'), c=selected('category'), s=selected('style');
+   const bg=selected('background'), li=selected('lighting'), ca=selected('camera'), co=selected('composition'), m=selected('model');
+   const mEth=selected('modelEthnicity'), mAge=selected('modelAge'), mPose=selected('modelPose');
+
+   const points = [...document.querySelectorAll('#sellingPoints input:checked')]
+     .map(x => DATA.sellingPoints.find(y => y.id === x.value))
+     .filter(Boolean);
+
+   const activeTask = document.querySelector('#taskOptions .option.active');
+   const task = activeTask ? activeTask.dataset.task : 'background';
+   const product = $('productInfo').value.trim() || c.name;
+   const preserve = $('preserve').value.trim() || '严格保持商品原本的设计、颜色、版型、Logo标识、印花、标签、面料材质纹理、比例及所有功能性细节不变。';
+   const extra = $('extra').value.trim();
+
+   let taskText = {
+     retouch:'在完全不改变原商品像素与细节的前提下，对现有商品图片进行商业级高精修图与品质提升。',
+     background:'在严格保留原商品本体的前提下，仅对背景与拍摄环境进行高质感替换。',
+     model:'将原图商品自然真实地穿戴在模特身上，保证人体比例真实，服装贴合自然。',
+     lifestyle:'创建真实的日常穿搭与生活使用场景，突出商品在实际生活中的质感，同时保持商品为主体。',
+     detail:'生成高精度的近景特写图，清晰展现原商品的做工、面料材质纹理与功能性缝线。',
+     complete:'规划生成全套跨境电商图片策略：包含高转化主图、模特上身图、场景生活图、细节特写图及背面图。'
+   }[task] || '';
+
+   let modelPromptText = m.id === 'no_model'
+     ? m.prompt
+     : `${m.prompt}（${mEth.prompt}，${mAge.prompt}，呈现${mPose.prompt}）`;
+
+   let pointText = points.length ? points.map(x=>x.prompt).join('；') : '仅展示商品真实具备的品质，严禁虚构未验证的功能卖点。';
+   let ratio = $('ratio') ? $('ratio').value : '1:1';
+
+   const prompt=`【角色定义】
+你是一位资深的跨境电商服装视觉总监与AI图像精修生成专家。
+
+【目标平台】
+${p.name}
+${platformRules()}
+
+【商品信息】
+商品名称：${product}
+所属品类：${c.name}
+
+【生成任务】
+${taskText}
+
+【视觉方向】
+视觉风格：${s.prompt}
+背景环境：${bg.prompt}
+灯光效果：${li.prompt}
+镜头角度：${ca.prompt}
+画面构图：${co.prompt}
+模特设定：${modelPromptText}
+输出比例：${ratio}
+
+【核心卖点视觉化】
+${pointText}
+
+【最高优先级：商品一致性要求】
+${preserve}
+
+【画质与商业摄影要求】
+写实商业时装摄影风格，还原真实细腻的面料材质纹理，自然健康的皮肤质感，符合真实人体比例，商品轮廓边缘清晰干练，色彩精准无色差，具备柔和自然的阴影与受光面，整体呈现高级且真实的跨境电商爆款视觉。
+
+【负向提示词 (Negative Prompt)】
+${DATA.negative.join('；')}。
+
+${extra ? '【卖家自定义补充要求】\n'+extra : ''}
+
+【最终校验规则】
+在生成图像前，请再次确认服装商品与原图保持完全一致。严禁添加、修改或改动任何产品的原有特征，确保买家在1-2秒内即可清晰识别产品本体。`;
+
+   $('prompt').textContent = prompt;
+   $('chips').innerHTML = [p.name, t.name, c.name, s.name, bg.name, li.name, ca.name, co.name, mEth.name, mPose.name]
+     .filter(x => x)
+     .map(x => `<span class="chip">${x}</span>`).join('');
+   $('stats').textContent = `已生成：${prompt.length} 字符 · ${p.name} · ${t.name}`;
+   renderStrategy();
+  }
+
+  function copyPrompt(){
+   const text = $('prompt').textContent;
+   if(text.startsWith('请选择')) return alert('请先生成 Prompt');
+   if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(()=>alert('Prompt 已复制')).catch(()=>fallbackCopy(text));
+   } else { fallbackCopy(text); }
+  }
+  function fallbackCopy(text) {
+   const ta = document.createElement("textarea");
+   ta.value = text; document.body.appendChild(ta); ta.select();
+   try { document.execCommand('copy'); alert('Prompt 已复制'); }
+   catch (err) { alert('复制失败，请手动选择复制'); }
+   document.body.removeChild(ta);
+  }
+
+  function resetAll(){
+   fill('platform', DATA.platforms, DEFAULTS.platform);
+   fill('imageType', DATA.imageTypes, DEFAULTS.imageType);
+   fill('category', DATA.categories, DEFAULTS.category);
+   fill('style', DATA.styles, DEFAULTS.style);
+   fill('background', DATA.backgrounds, DEFAULTS.background);
+   fill('lighting', DATA.lighting, DEFAULTS.lighting);
+   fill('camera', DATA.camera, DEFAULTS.camera);
+   fill('composition', DATA.composition, DEFAULTS.composition);
+   fill('model', DATA.models, DEFAULTS.model);
+   fill('modelEthnicity', DATA.modelEthnicities, DEFAULTS.modelEthnicity);
+   fill('modelAge', DATA.modelAges, DEFAULTS.modelAge);
+   fill('modelPose', DATA.modelPoses, DEFAULTS.modelPose);
+   $('productInfo').value = '男士长袖商务衬衫，翻领，纽扣门襟，修身版型';
+   $('preserve').value = '严格保持商品原本的设计、颜色、版型、Logo标识、印花、标签、面料材质纹理、比例及所有功能性细节不变。';
+   $('extra').value = '整体呈现自然真实的美式年轻审美与高品质电商视觉质感，切忌过度浮光吹嘘的后期修饰。';
+   $('prompt').textContent = '请选择商品特征后点击「生成优化 Prompt」。';
+   $('chips').innerHTML = '';
+   $('stats').textContent = '当前：待生成';
+   document.querySelectorAll('#sellingPoints input').forEach(x => {
+     x.checked = DEFAULTS.sellingPoints.includes(x.value);
+   });
+  }
+
+  function renderStrategy(){
+   const p = selected('platform');
+   if ($('platformStrategy')) {
+     $('platformStrategy').innerHTML = `<div class="notice" style="margin:0"><b>${p.name}：</b>${p.desc}<br><br>${platformRules()}</div>`;
+   }
+  }
+
+  $('btnGenerate').onclick = generatePrompt;
+  $('btnCopy').onclick = copyPrompt;
+  $('btnReset').onclick = resetAll;
+  if ($('platform')) { $('platform').addEventListener('change', renderStrategy); }
+  renderStrategy();
+});
+
+/* 页脚声明 */
+var footer = document.createElement('footer');
+footer.className = 'site-footer';
+footer.style.marginTop = '40px';
+footer.style.padding = '24px 32px';
+footer.style.textAlign = 'center';
+footer.style.background = 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)';
+footer.style.borderTop = '3px solid #ff6a00';
+footer.style.borderRadius = '10px';
+footer.innerHTML = '<p style="color:#b0b0b0;font-size:12px;line-height:1.8;margin:2px 0;">本网页所有功能只提供建议，不负任何法律责任，所有资源来源于互联网。</p><p style="color:#b0b0b0;font-size:12px;line-height:1.8;margin:2px 0;">如有功能更新需求请联系 <span style="color:#ff6a00;font-weight:600;">麦杞岐（maggie.xie）</span></p>';
+document.body.appendChild(footer);
+</script>
+</body>
+</html>

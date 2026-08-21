@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>市场需求 - 麦杞岐对接服务站</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+body { background: #f5f5f5; }
+.market-header {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    color: #fff;
+    padding: 30px 20px;
+    text-align: center;
+    border-bottom: 3px solid #ff6a00;
+}
+.market-header h1 { font-size: 28px; margin: 0 0 8px; }
+.market-header .subtitle { font-size: 14px; color: #ccc; }
+.market-notice {
+    background: #fff3e0;
+    border: 1px solid #ff6a00;
+    border-radius: 8px;
+    padding: 12px 20px;
+    margin: 15px auto;
+    max-width: 1400px;
+    font-size: 14px;
+    color: #e65100;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.market-notice .icon { font-size: 20px; }
+.market-disclaimer {
+    background: #fff;
+    border-left: 3px solid #ff6a00;
+    padding: 8px 16px;
+    margin: 10px auto;
+    max-width: 1400px;
+    font-size: 12px;
+    color: #999;
+}
+.market-layout {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    gap: 0;
+    min-height: 600px;
+}
+.market-sidebar {
+    width: 180px;
+    background: #1a1a1a;
+    color: #fff;
+    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+.market-sidebar h3 {
+    font-size: 14px;
+    color: #ff6a00;
+    text-transform: uppercase;
+    padding: 0 20px 15px;
+    border-bottom: 1px solid #333;
+    margin-bottom: 10px;
+}
+.market-sidebar a {
+    display: block;
+    padding: 12px 20px;
+    color: #ccc;
+    text-decoration: none;
+    font-size: 15px;
+    transition: all 0.3s;
+    border-left: 3px solid transparent;
+}
+.market-sidebar a:hover {
+    background: rgba(255,106,0,0.15);
+    color: #ff6a00;
+    border-left-color: #ff6a00;
+}
+.market-sidebar a.active {
+    background: #ff6a00;
+    color: #fff;
+    border-left-color: #fff;
+}
+.market-sidebar .sep {
+    height: 1px;
+    background: #333;
+    margin: 10px 20px;
+}
+.market-content {
+    flex: 1;
+    padding: 20px;
+    overflow: hidden;
+}
+.region-section {
+    margin-bottom: 40px;
+}
+.region-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #1a1a1a;
+    padding: 12px 20px;
+    background: linear-gradient(90deg, #fff3e0, transparent);
+    border-left: 4px solid #ff6a00;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.region-title .badge {
+    background: #ff6a00;
+    color: #fff;
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+.category-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    padding: 8px 16px;
+    margin: 20px 0 10px;
+    border-bottom: 2px solid #ff6a00;
+    display: inline-block;
+}
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+.image-card {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+.image-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+.image-card .img-wrap {
+    width: 100%;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    background: #f0f0f0;
+    position: relative;
+}
+.image-card .img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+.image-card:hover .img-wrap img {
+    transform: scale(1.05);
+}
+.image-card .img-wrap .no-img {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ccc;
+    font-size: 12px;
+    text-align: center;
+    padding: 10px;
+}
+.image-card .img-wrap .search-icon {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(0,0,0,0.7);
+    color: #ff6a00;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.image-card:hover .img-wrap .search-icon {
+    opacity: 1;
+}
+.image-card .info {
+    padding: 10px;
+    font-size: 12px;
+}
+.image-card .info .label {
+    color: #999;
+    font-size: 11px;
+    margin-bottom: 2px;
+}
+.image-card .info .value {
+    color: #333;
+    margin-bottom: 6px;
+    word-break: break-all;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.image-card .info .copy-btn {
+    background: #ff6a00;
+    color: #fff;
+    border: none;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.image-card .info .copy-btn:hover {
+    background: #e55a00;
+}
+.image-card .info .time-value {
+    color: #ff6a00;
+    font-weight: 500;
+}
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.modal-overlay.show {
+    display: flex;
+}
+.modal-overlay .close-btn {
+    position: absolute;
+    top: 20px; right: 30px;
+    color: #fff;
+    font-size: 36px;
+    cursor: pointer;
+    z-index: 10001;
+}
+.modal-overlay .modal-img {
+    max-width: 80%;
+    max-height: 70vh;
+    border-radius: 8px;
+}
+.modal-overlay .modal-info {
+    color: #fff;
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+    max-width: 600px;
+}
+.modal-overlay .modal-info .copy-btn {
+    background: #ff6a00;
+    color: #fff;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-left: 8px;
+}
+.modal-overlay .modal-info .search-link {
+    display: inline-block;
+    margin-top: 10px;
+    background: #ff6a00;
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 14px;
+}
+.modal-overlay .nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+    font-size: 36px;
+    cursor: pointer;
+    padding: 16px;
+    user-select: none;
+}
+.modal-overlay .prev-btn { left: 20px; }
+.modal-overlay .next-btn { right: 20px; }
+.back-home-btn {
+    position: fixed;
+    top: 15px; left: 15px;
+    background: #ff6a00;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 14px;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.back-home-btn:hover { background: #e55a00; }
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #999;
+    font-size: 16px;
+}
+@media (max-width: 768px) {
+    .image-grid { grid-template-columns: repeat(2, 1fr); }
+    .market-sidebar { width: 120px; }
+}
+</style>
+</head>
+<body>
+<a href="index.html" class="back-home-btn">← 返回首页</a>
+
+<div class="market-header">
+    <h1>🔥 市场需求（高优）</h1>
+    <div class="subtitle">maggie.xie · OBM2 男装外套夹克 / 衬衫亨利衫</div>
+</div>
+
+<div class="market-notice">
+    <span class="icon">⚠️</span>
+    <span>有类似款请复制<strong>款式编号</strong> + <strong>商品SPU</strong>提报给<strong>麦杞岐</strong></span>
+</div>
+
+<div class="market-disclaimer">
+    声明：以上款式仅供参考，不可直接复制或侵权。本网页不负任何法律责任，所有资源来源于互联网。
+</div>
+
+<div class="market-layout">
+    <div class="market-sidebar">
+        <h3>区域导航</h3>
+        <a href="#region-eu" data-region="eu">🇪🇺 欧区</a>
+        <a href="#region-us" data-region="us">🇺🇸 美区</a>
+        <a href="#region-latam" data-region="latam">🌎 拉美</a>
+        <div class="sep"></div>
+        <a href="#top">↑ 回到顶部</a>
+    </div>
+    <div class="market-content" id="market-content">
+        <div class="loading">正在加载市场需求数据...</div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="img-modal">
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+    <span class="nav-btn prev-btn" onclick="navModal(-1)">&#8249;</span>
+    <span class="nav-btn next-btn" onclick="navModal(1)">&#8250;</span>
+    <img class="modal-img" id="modal-img" src="">
+    <div class="modal-info" id="modal-info"></div>
+</div>
+
+<script>
+let allData = [];
+let currentModalIdx = -1;
+
+async function loadData() {
+    try {
+        const resp = await fetch('data/market_demand.json');
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        allData = await resp.json();
+        renderData();
+    } catch(e) {
+        document.getElementById('market-content').innerHTML = 
+            '<div class="loading" style="color:#f00;">数据加载失败，请确保 data/market_demand.json 文件存在</div>';
+    }
+}
+
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function copyText(text, btn) {
+    navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = '已复制✓';
+        setTimeout(() => { btn.textContent = orig; }, 1500);
+    });
+}
+
+function renderData() {
+    const content = document.getElementById('market-content');
+    const regions = [
+        { key: '欧区', id: 'region-eu', icon: '🇪🇺' },
+        { key: '美区', id: 'region-us', icon: '🇺🇸' },
+        { key: '拉美', id: 'region-latam', icon: '🌎' }
+    ];
+    const categories = [
+        { key: '外套夹克', label: '🧥 外套夹克' },
+        { key: '衬衫', label: '👔 衬衫/亨利衫' }
+    ];
+
+    let html = '<div id="top"></div>';
+
+    regions.forEach(region => {
+        const regionData = allData.filter(d => d.region === region.key);
+        if (regionData.length === 0) return;
+
+        html += '<div class="region-section" id="' + region.id + '">';
+        html += '<div class="region-title">' + region.icon + ' ' + region.key + ' <span class="badge">' + regionData.length + '款</span></div>';
+
+        categories.forEach(cat => {
+            const catData = regionData.filter(d => d.category === cat.key);
+            if (catData.length === 0) return;
+
+            html += '<div class="category-title">' + cat.label + '（' + catData.length + '款）</div>';
+            html += '<div class="image-grid">';
+
+            catData.forEach(function(item) {
+                var globalIdx = allData.indexOf(item);
+                var firstImg = (item.images && item.images.length > 0) ? item.images[0] : '';
+                var hasImg = !!firstImg;
+
+                html += '<div class="image-card" onclick="openModal(' + globalIdx + ')">';
+                html += '<div class="img-wrap">';
+                if (hasImg) {
+                    html += '<img src="' + escapeHtml(firstImg) + '" alt="商品图片" loading="lazy" onerror="this.parentElement.innerHTML=\'<div class=\\\'no-img\\\'>图片加载失败</div>\'">';
+                    html += '<div class="search-icon">🔍</div>';
+                } else {
+                    html += '<div class="no-img">暂无图片<br>点击查看链接</div>';
+                }
+                html += '</div>';
+                html += '<div class="info">';
+                html += '<div class="label">推荐类目路径</div>';
+                html += '<div class="value">' + escapeHtml(item.leafCategory || '-') + '</div>';
+                html += '<div class="label">款式编号</div>';
+                html += '<div class="value"><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + escapeHtml(item.industryId || '-') + '</span>';
+                if (item.industryId) {
+                    html += '<button class="copy-btn" onclick="event.stopPropagation();copyText(\'' + escapeHtml(item.industryId) + '\',this)">复制</button>';
+                }
+                html += '</div>';
+                html += '<div class="label">更新时间</div>';
+                html += '<div class="value time-value">' + escapeHtml(item.updateTime || '-') + '</div>';
+                html += '</div>';
+                html += '</div>';
+            });
+
+            html += '</div>';
+        });
+
+        html += '</div>';
+    });
+
+    content.innerHTML = html;
+
+    // Sidebar active state on scroll
+    var sidebarLinks = document.querySelectorAll('.market-sidebar a[data-region]');
+    var sections = document.querySelectorAll('.region-section');
+    window.addEventListener('scroll', function() {
+        var current = '';
+        sections.forEach(function(section) {
+            var rect = section.getBoundingClientRect();
+            if (rect.top <= 120) {
+                current = section.id;
+            }
+        });
+        sidebarLinks.forEach(function(link) {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + current) {
+                link.classList.add('active');
+            }
+        });
+    });
+}
+
+function openModal(idx) {
+    currentModalIdx = idx;
+    showModalImage();
+}
+
+function showModalImage() {
+    var item = allData[currentModalIdx];
+    if (!item) return;
+    var modal = document.getElementById('img-modal');
+    var img = document.getElementById('modal-img');
+    var info = document.getElementById('modal-info');
+
+    if (item.images && item.images.length > 0) {
+        img.src = item.images[0];
+        img.style.display = 'block';
+    } else if (item.link) {
+        img.style.display = 'none';
+    }
+
+    var infoHtml = '<div>推荐类目路径：' + escapeHtml(item.leafCategory || '-') + '</div>';
+    infoHtml += '<div>款式编号：' + escapeHtml(item.industryId || '-');
+    if (item.industryId) {
+        infoHtml += ' <button class="copy-btn" onclick="copyText(\'' + escapeHtml(item.industryId) + '\',this)">复制编号</button>';
+    }
+    infoHtml += '</div>';
+    infoHtml += '<div>更新时间：' + escapeHtml(item.updateTime || '-') + '</div>';
+
+    if (item.images && item.images.length > 0) {
+        var searchUrl = 'https://www.google.com/searchbyimage?image_url=' + encodeURIComponent(item.images[0]);
+        infoHtml += '<br><a href="' + searchUrl + '" target="_blank" class="search-link">🔍 搜索识别图片同款</a>';
+    }
+    if (item.link) {
+        infoHtml += ' <a href="' + escapeHtml(item.link) + '" target="_blank" class="search-link" style="background:#333;">📦 查看商品页面</a>';
+    }
+
+    info.innerHTML = infoHtml;
+    modal.classList.add('show');
+}
+
+function closeModal() {
+    document.getElementById('img-modal').classList.remove('show');
+}
+
+function navModal(dir) {
+    currentModalIdx += dir;
+    if (currentModalIdx < 0) currentModalIdx = allData.length - 1;
+    if (currentModalIdx >= allData.length) currentModalIdx = 0;
+    showModalImage();
+}
+
+document.addEventListener('keydown', function(e) {
+    if (!document.getElementById('img-modal').classList.contains('show')) return;
+    if (e.key === 'Escape') closeModal();
+    if (e.key === 'ArrowLeft') navModal(-1);
+    if (e.key === 'ArrowRight') navModal(1);
+});
+
+document.getElementById('img-modal').addEventListener('click', function(e) {
+    if (e.target.id === 'img-modal') closeModal();
+});
+
+document.querySelectorAll('.market-sidebar a').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+        var href = link.getAttribute('href');
+        if (href && href.startsWith('#')) {
+            e.preventDefault();
+            var target = document.querySelector(href);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    });
+});
+
+loadData();
+</script>
+
+<footer class="site-footer">
+    <div class="footer-content">
+        <p>本网页所有功能只提供建议，不负任何法律责任，所有资源来源于互联网。</p>
+        <p>如有功能更新需求请联系 <strong>麦杞岐（maggie.xie）</strong></p>
+    </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>标题优化工具 | 麦杞岐对接服务站</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+.title-layout { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; }
+@media(max-width:900px){ .title-layout { grid-template-columns: 1fr; } }
+.dim-group { margin-bottom: 16px; }
+.dim-group-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.dim-group-title .must-badge { background: var(--red); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 4px; }
+.dim-group-title .high-badge { background: var(--primary); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 4px; }
+.dim-group-title .extra-badge { background: #888; color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 4px; }
+.dim-group-title .en-name { font-size: 12px; color: var(--muted); font-weight: 400; margin-left: 4px; }
+</style>
+</head>
+<body>
+
+<header class="top-bar">
+  <div class="logo">
+    <div class="logo-icon">T</div>
+    <div class="logo-text">
+      <strong>标题优化工具</strong>
+      <span>麦杞岐对接服务站 · maggie.xie</span>
+    </div>
+  </div>
+  <a href="index.html" class="back-home-btn">← 返回首页</a>
+</header>
+
+<main class="main-content" style="margin-top:var(--nav-h);">
+
+  <div class="section">
+    <div class="section-header">
+      <h2><span class="sec-icon">📝</span> 标题优化工具</h2>
+      <p>选择品类 → 按维度选词 → 自动生成中英文标题</p>
+    </div>
+
+    <!-- 品类选择 -->
+    <div class="title-tabs">
+      <div class="title-tab active" data-cat="shirt" onclick="switchCategory('shirt')">👕 衬衫 / 亨利衫</div>
+      <div class="title-tab" data-cat="jacket" onclick="switchCategory('jacket')">🧥 外套夹克</div>
+    </div>
+
+    <div class="title-layout">
+      <!-- 左侧：维度选词区 -->
+      <div>
+        <div id="dimensions-container">
+          <div style="text-align:center;padding:40px;color:var(--muted);">加载中...</div>
+        </div>
+      </div>
+
+      <!-- 右侧：标题生成结果 -->
+      <div>
+        <div class="title-result">
+          <h3>✨ 生成标题预览</h3>
+          <div style="margin-bottom:12px;">
+            <div style="font-size:12px;color:#aaa;margin-bottom:4px;">🇨🇳 中文标题：</div>
+            <div class="title-cn" id="title-cn">请选择词汇生成标题...</div>
+          </div>
+          <div style="margin-bottom:12px;">
+            <div style="font-size:12px;color:#aaa;margin-bottom:4px;">🇬🇧 英文标题：</div>
+            <div class="title-en" id="title-en">Select keywords to generate title...</div>
+          </div>
+          <div class="title-warn">⚠️ 生成标题不可以直接使用，请检查后使用！</div>
+          <div style="margin-top:16px;">
+            <button class="btn btn-primary" style="width:100%;" onclick="copyTitle()">📋 复制标题</button>
+          </div>
+          <div style="margin-top:8px;">
+            <button class="btn btn-secondary" style="width:100%;" onclick="resetTitle()">↺ 重置选词</button>
+          </div>
+          <div style="margin-top:12px;font-size:11px;color:#666;">
+            <div id="selected-count">已选 0 个词</div>
+          </div>
+        </div>
+
+        <!-- 维度说明 -->
+        <div class="card" style="margin-top:16px;background:var(--primary-light);border-color:var(--tag-border);">
+          <h3 style="font-size:13px;color:var(--primary-hover);margin-bottom:8px;">💡 维度说明</h3>
+          <div style="font-size:12px;color:var(--primary-hover);line-height:1.8;">
+            <span style="background:var(--red);color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;">必选</span> 核心维度，建议必选<br>
+            <span style="background:var(--primary);color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;">高优</span> 重要补充维度，建议选择<br>
+            <span style="background:#888;color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;">额外</span> 拓展维度，按需选择
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+let keywordData = null;
+let currentCategory = 'shirt';
+let selectedWords = {};
+
+async function loadKeywords() {
+  try {
+    const resp = await fetch('data/title_keywords.json');
+    keywordData = await resp.json();
+    renderDimensions();
+  } catch(e) {
+    document.getElementById('dimensions-container').innerHTML = '<div style="color:var(--red);">词库加载失败，请确保 data/title_keywords.json 存在</div>';
+  }
+}
+
+function switchCategory(cat) {
+  currentCategory = cat;
+  selectedWords = {};
+  document.querySelectorAll('.title-tab').forEach(tab => {
+    tab.classList.toggle('active', tab.dataset.cat === cat);
+  });
+  renderDimensions();
+  updateTitle();
+}
+
+function renderDimensions() {
+  if (!keywordData) return;
+  const catData = keywordData.categories[currentCategory];
+  const rule = catData.combo_rule;
+  const container = document.getElementById('dimensions-container');
+  
+  let html = '';
+  
+  // 按必选、高优、额外排序展示
+  const ordered = [...rule.must, ...rule.high, ...rule.extra];
+  
+  ordered.forEach((dimName, idx) => {
+    const dim = catData.dimensions[dimName];
+    if (!dim) return;
+    
+    let badge = '';
+    let badgeClass = '';
+    if (rule.must.includes(dimName)) { badge = '必选'; badgeClass = 'must-badge'; }
+    else if (rule.high.includes(dimName)) { badge = '高优'; badgeClass = 'high-badge'; }
+    else { badge = '额外'; badgeClass = 'extra-badge'; }
+    
+    html += `<div class="dim-group">
+      <div class="dim-group-title">
+        <span class="${badgeClass}">${badge}</span>
+        ${dimName}
+        <span class="en-name">${dim.en}</span>
+      </div>
+      <div class="dim-tags">`;
+    
+    dim.words.forEach(word => {
+      const wordKey = `${dimName}__${word.cn}`;
+      const isSelected = selectedWords[wordKey];
+      html += `<span class="dim-tag ${isSelected ? 'selected' : ''}" 
+        onclick="toggleWord('${dimName}', '${word.cn}', '${word.en}', this)">
+        ${word.cn}<span class="tag-en">${word.en}</span>
+      </span>`;
+    });
+    
+    html += `</div></div>`;
+  });
+  
+  container.innerHTML = html;
+}
+
+function toggleWord(dimName, cn, en, el) {
+  const wordKey = `${dimName}__${cn}`;
+  if (selectedWords[wordKey]) {
+    delete selectedWords[wordKey];
+    el.classList.remove('selected');
+  } else {
+    selectedWords[wordKey] = { dim: dimName, cn: cn, en: en };
+    el.classList.add('selected');
+  }
+  updateTitle();
+}
+
+function updateTitle() {
+  const words = Object.values(selectedWords);
+  const catData = keywordData.categories[currentCategory];
+  const rule = catData.combo_rule;
+  
+  // 按维度顺序排列
+  const ordered = [...rule.must, ...rule.high, ...rule.extra];
+  const sortedWords = ordered.flatMap(dim => 
+    words.filter(w => w.dim === dim)
+  );
+  
+  const cnTitle = sortedWords.map(w => w.cn).join(' ');
+  const enTitle = sortedWords.map(w => w.en).join(' ');
+  
+  document.getElementById('title-cn').textContent = cnTitle || '请选择词汇生成标题...';
+  document.getElementById('title-en').textContent = enTitle || 'Select keywords to generate title...';
+  document.getElementById('selected-count').textContent = `已选 ${words.length} 个词`;
+}
+
+function copyTitle() {
+  const cn = document.getElementById('title-cn').textContent;
+  const en = document.getElementById('title-en').textContent;
+  if (!cn || cn === '请选择词汇生成标题...') {
+    alert('请先选择词汇生成标题');
+    return;
+  }
+  const text = `中文标题：${cn}\n英文标题：${en}\n\n⚠️ 生成标题不可以直接使用，请检查后使用！`;
+  
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(() => alert('标题已复制到剪贴板')).catch(() => fallbackCopy(text));
+  } else {
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); alert('标题已复制'); }
+  catch(e) { alert('复制失败，请手动选择复制'); }
+  document.body.removeChild(ta);
+}
+
+function resetTitle() {
+  selectedWords = {};
+  document.querySelectorAll('.dim-tag.selected').forEach(el => el.classList.remove('selected'));
+  updateTitle();
+}
+
+// 初始化
+loadKeywords();
+
+/* 页脚声明 */
+var footer = document.createElement('footer');
+footer.className = 'site-footer';
+footer.style.marginTop = '40px';
+footer.style.padding = '24px 32px';
+footer.style.textAlign = 'center';
+footer.style.background = 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)';
+footer.style.borderTop = '3px solid #ff6a00';
+footer.style.borderRadius = '10px';
+footer.innerHTML = '<p style="color:#b0b0b0;font-size:12px;line-height:1.8;margin:2px 0;">本网页所有功能只提供建议，不负任何法律责任，所有资源来源于互联网。</p><p style="color:#b0b0b0;font-size:12px;line-height:1.8;margin:2px 0;">如有功能更新需求请联系 <span style="color:#ff6a00;font-weight:600;">麦杞岐（maggie.xie）</span></p>';
+document.body.appendChild(footer);
+</script>
+</body>
+</html>

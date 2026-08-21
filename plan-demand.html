@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>企划需求 | 麦杞岐对接服务站</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="top-bar">
+  <div class="logo">
+    <div class="logo-icon">P</div>
+    <div class="logo-text">
+      <strong>企划需求</strong>
+      <span>麦杞岐对接服务站 · maggie.xie</span>
+    </div>
+  </div>
+  <a href="index.html" class="back-home-btn">← 返回首页</a>
+</header>
+
+<main class="main-content" style="margin-top:var(--nav-h);">
+
+  <div class="section">
+    <div class="section-header">
+      <h2><span class="sec-icon">📚</span> 企划需求</h2>
+      <p>外套夹克 / 衬衫亨利衫 · 企划款式参考PDF展示 · 更新PDF文件即可同步</p>
+    </div>
+
+    <!-- 大板块切换 -->
+    <div class="plan-tabs">
+      <div class="plan-tab active" data-tab="jacket" onclick="switchTab('jacket')">🧥 外套夹克</div>
+      <div class="plan-tab" data-tab="shirt" onclick="switchTab('shirt')">👕 衬衫亨利衫</div>
+    </div>
+
+    <!-- 外套夹克面板 -->
+    <div id="panel-jacket">
+      <div class="plan-nav" id="nav-jacket">
+        <a class="active" data-target="pdf-jacket-1">都市基础风</a>
+        <a data-target="pdf-jacket-2">工装</a>
+        <a data-target="pdf-jacket-3">皮衣夹克</a>
+        <a data-target="pdf-jacket-4">户外机能风</a>
+      </div>
+
+      <div class="pdf-section" id="pdf-jacket-1">
+        <h3>都市基础风</h3>
+        <iframe class="pdf-viewer" src="assets/pdf/jacket-urban-basic.pdf#view=FitH&zoom=100"></iframe>
+      </div>
+      <div class="pdf-section" id="pdf-jacket-2">
+        <h3>工装</h3>
+        <iframe class="pdf-viewer" src="assets/pdf/jacket-workwear.pdf#view=FitH&zoom=100"></iframe>
+      </div>
+      <div class="pdf-section" id="pdf-jacket-3">
+        <h3>皮衣夹克</h3>
+        <iframe class="pdf-viewer" src="assets/pdf/jacket-leather.pdf#view=FitH&zoom=100"></iframe>
+      </div>
+      <div class="pdf-section" id="pdf-jacket-4">
+        <h3>户外机能风</h3>
+        <iframe class="pdf-viewer" src="assets/pdf/jacket-outdoor-tech.pdf#view=FitH&zoom=100"></iframe>
+      </div>
+    </div>
+
+    <!-- 衬衫亨利衫面板 -->
+    <div id="panel-shirt" class="hidden">
+      <div class="plan-nav" id="nav-shirt">
+        <a class="active" data-target="pdf-shirt-1">工装衬衫</a>
+        <a data-target="pdf-shirt-2">休闲衬衫</a>
+        <a data-target="pdf-shirt-3">商务衬衫</a>
+      </div>
+
+      <div class="pdf-section" id="pdf-shirt-1">
+        <h3>工装衬衫</h3>
+        <iframe class="pdf-viewer" src="assets/pdf/shirt-workwear.pdf#view=FitH&zoom=100"></iframe>
+      </div>
+      <div class="pdf-section" id="pdf-shirt-2">
+        <h3>休闲衬衫</h3>
+        <iframe class="pdf-viewer" src="assets/pdf/shirt-casual.pdf#view=FitH&zoom=100"></iframe>
+      </div>
+      <div class="pdf-section" id="pdf-shirt-3">
+        <h3>商务衬衫</h3>
+        <iframe class="pdf-viewer" src="assets/pdf/shirt-business.pdf#view=FitH&zoom=100"></iframe>
+      </div>
+    </div>
+
+    <!-- 更新说明 -->
+    <div style="margin-top:24px;padding:16px;background:var(--primary-light);border-radius:8px;font-size:13px;color:var(--primary-hover);line-height:1.8;">
+      <b>💡 如何更新PDF：</b><br>
+      1. 外套夹克类：替换 assets/pdf/ 下的 jacket-urban-basic.pdf / jacket-workwear.pdf / jacket-leather.pdf / jacket-outdoor-tech.pdf<br>
+      2. 衬衫类：替换 assets/pdf/ 下的 shirt-workwear.pdf / shirt-casual.pdf / shirt-business.pdf<br>
+      3. 文件名必须保持一致，直接覆盖即可
+    </div>
+  </div>
+
+</main>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.plan-tab').forEach(function(t) {
+    t.classList.toggle('active', t.dataset.tab === tab);
+  });
+  document.getElementById('panel-jacket').classList.toggle('hidden', tab !== 'jacket');
+  document.getElementById('panel-shirt').classList.toggle('hidden', tab !== 'shirt');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.querySelectorAll('.plan-nav a').forEach(function(link) {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    var navId = link.parentElement.id;
+    document.querySelectorAll('#' + navId + ' a').forEach(function(a) { a.classList.remove('active'); });
+    link.classList.add('active');
+    var target = document.getElementById(link.dataset.target);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+var footer = document.createElement('footer');
+footer.className = 'site-footer';
+footer.style.marginTop = '40px';
+footer.style.padding = '24px 32px';
+footer.style.textAlign = 'center';
+footer.style.background = 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)';
+footer.style.borderTop = '3px solid #ff6a00';
+footer.style.borderRadius = '10px';
+footer.innerHTML = '<p style="color:#b0b0b0;font-size:12px;line-height:1.8;margin:2px 0;">本网页所有功能只提供建议，不负任何法律责任，所有资源来源于互联网。</p><p style="color:#b0b0b0;font-size:12px;line-height:1.8;margin:2px 0;">如有功能更新需求请联系 <span style="color:#ff6a00;font-weight:600;">麦杞岐（maggie.xie）</span></p>';
+document.body.appendChild(footer);
+</script>
+</body>
+</html>

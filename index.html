@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>麦杞岐对接服务站 | 男装外套夹克 · 衬衫亨利衫</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- 顶部导航 -->
+<header class="top-bar">
+  <div class="logo">
+    <div class="logo-icon">M</div>
+    <div class="logo-text">
+      <strong>麦杞岐对接服务站</strong>
+      <span>maggie.xie · OBM2 男装外套夹克 / 衬衫亨利衫</span>
+    </div>
+  </div>
+  <button class="nav-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+</header>
+
+<!-- 侧边导航 -->
+<nav class="sidebar">
+  <ul class="sidebar-nav">
+    <li><a class="active" data-target="sec-category"><span class="nav-icon">📋</span> 类目指引</a></li>
+    <li><a data-target="sec-visual"><span class="nav-icon">🖼️</span> 视觉优化</a></li>
+    <li><a data-target="sec-title"><span class="nav-icon">📝</span> 标题优化</a></li>
+    <li><a data-target="sec-demand"><span class="nav-icon">🔥</span> 市场需求<span style="background:var(--primary);color:#fff;font-size:10px;padding:1px 6px;border-radius:10px;margin-left:6px;">高优</span></a></li>
+    <li><a data-target="sec-plan"><span class="nav-icon">📚</span> 企划需求</a></li>
+    <li><a data-target="sec-info"><span class="nav-icon">📢</span> 近期资讯</a></li>
+  </ul>
+</nav>
+
+<!-- 主内容 -->
+<main class="main-content">
+
+  <!-- ==================== 模块1：类目指引 ==================== -->
+  <section class="section" id="sec-category">
+    <div class="section-header">
+      <h2><span class="sec-icon">📋</span> 类目指引</h2>
+      <p>点击类目查看详细分类与路径 · 更新类目指引.xlsx即可同步</p>
+    </div>
+    <div id="category-container" class="cat-grid">
+      <div style="text-align:center;padding:40px;color:var(--muted);">加载中...</div>
+    </div>
+  </section>
+
+  <!-- ==================== 模块2：视觉优化 ==================== -->
+  <section class="section" id="sec-visual">
+    <div class="section-header">
+      <h2><span class="sec-icon">🖼️</span> 视觉优化</h2>
+      <p>市场视觉需求 · AI指令快速生成</p>
+    </div>
+    <div class="vis-btn-group">
+      <div class="vis-btn-card" onclick="document.getElementById('vis-pdf-area').classList.toggle('hidden')">
+        <div class="vis-icon">📊</div>
+        <div class="vis-title">市场视觉需求</div>
+        <div class="vis-desc">查看市场视觉需求PDF文档</div>
+      </div>
+      <a href="image-optimization.html" style="text-decoration:none;">
+        <div class="vis-btn-card">
+          <div class="vis-icon">✨</div>
+          <div class="vis-title">AI指令快速生成</div>
+          <div class="vis-desc">一键生成AI图片优化提示词</div>
+        </div>
+      </a>
+    </div>
+    <div id="vis-pdf-area" class="hidden">
+      <div class="card" style="padding:20px;">
+        <h3 style="margin-bottom:12px;color:var(--primary);">📄 市场视觉需求文档</h3>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">替换 assets/pdf/market-visual-demand.pdf 即可更新内容</p>
+        <iframe class="pdf-viewer" src="assets/pdf/market-visual-demand.pdf#view=FitH&zoom=120" style="height:80vh;min-height:600px;"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 模块3：标题优化 ==================== -->
+  <section class="section" id="sec-title">
+    <div class="section-header">
+      <h2><span class="sec-icon">📝</span> 标题优化</h2>
+      <p>选择品类 → 按维度选词 → 自动生成中英文标题</p>
+    </div>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:16px;">点击下方按钮进入标题优化工具页面：</p>
+    <a href="title-optimization.html" class="btn btn-primary btn-large">📝 进入标题优化工具 →</a>
+    <div style="margin-top:20px;padding:16px;background:var(--primary-light);border-radius:8px;font-size:13px;color:var(--primary-hover);line-height:1.8;">
+      <b>💡 使用说明：</b><br>
+      1. 选择品类（衬衫 / 外套夹克）<br>
+      2. 按照各个维度依次选词（品类、图案、领型、场景、袖长、风格等）<br>
+      3. 系统自动集合生成中英文标题<br>
+      4. <b style="color:var(--red);">⚠️ 生成标题不可以直接使用，请检查后使用</b>
+    </div>
+  </section>
+
+  <!-- ==================== 模块4：市场需求 ==================== -->
+  <section class="section" id="sec-demand">
+    <div class="section-header">
+      <h2><span class="sec-icon">🔥</span> 市场需求（高优）</h2>
+      <p>相似品/相同品 - 复制商品编号+SPU 同步麦杞岐</p>
+    </div>
+    <div class="demand-notice">
+      <b>📌 有类似款请复制款式编号 + 商品SPU提报给麦杞岐</b><br>
+      点击图片可放大查看，支持搜索识别图片同款
+    </div>
+    <div class="demand-disclaimer">
+      <b>⚠️ 免责声明：</b>本页面展示的图片仅为款式参考，不可直接复制或侵权使用。所有图片版权归原品牌所有，本页面不承担任何因侵权产生的法律责任。商家应确保所提报的商品具有合法来源和授权。
+    </div>
+    <div style="margin-bottom:16px;">
+      <a href="market-demand.html" class="btn btn-primary btn-large">🔍 进入市场需求图片区 →</a>
+    </div>
+  </section>
+
+  <!-- ==================== 模块5：企划需求 ==================== -->
+  <section class="section" id="sec-plan">
+    <div class="section-header">
+      <h2><span class="sec-icon">📚</span> 企划需求</h2>
+      <p>外套夹克 / 衬衫亨利衫 · 企划款式参考PDF展示</p>
+    </div>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:16px;">点击进入企划款式参考页面，查看各风格款式PDF：</p>
+    <a href="plan-demand.html" class="btn btn-primary btn-large">📚 进入企划需求展示 →</a>
+  </section>
+
+  <!-- ==================== 模块6：近期资讯 ==================== -->
+  <section class="section" id="sec-info">
+    <div class="section-header">
+      <h2><span class="sec-icon">📢</span> 近期资讯</h2>
+      <p>国家站点热搜词 · 近期通知 · 修改txt文件即可更新</p>
+    </div>
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>🔍 国家站点热搜词</h3>
+        <div class="info-content" id="hot-words">加载中...</div>
+      </div>
+      <div class="info-card">
+        <h3>📣 近期通知</h3>
+        <div class="info-content" id="notices">加载中...</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="assets/js/app.js"></script>
+
+<footer class="site-footer">
+  <p>本网页所有功能只提供建议，不负任何法律责任，所有资源来源于互联网。</p>
+  <p>如有功能更新需求请联系 <span class="footer-accent">麦杞岐（maggie.xie）</span></p>
+</footer>
+</body>
+</html>

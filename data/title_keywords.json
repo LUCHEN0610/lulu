@@ -1,0 +1,1034 @@
+{
+  "categories": {
+    "shirt": {
+      "name": "衬衫",
+      "dimensions": {
+        "品类": {
+          "en": "Category",
+          "words": [
+            {
+              "cn": "衬衫",
+              "en": "Shirt"
+            },
+            {
+              "cn": "休闲衬衫",
+              "en": "Casual Shirt"
+            },
+            {
+              "cn": "商务衬衫",
+              "en": "Dress Shirt"
+            },
+            {
+              "cn": "正装衬衫",
+              "en": "Formal Shirt"
+            },
+            {
+              "cn": "牛津衬衫",
+              "en": "Oxford Shirt"
+            },
+            {
+              "cn": "亚麻衬衫",
+              "en": "Linen Shirt"
+            },
+            {
+              "cn": "法兰绒衬衫",
+              "en": "Flannel Shirt"
+            },
+            {
+              "cn": "牛仔衬衫",
+              "en": "Denim Shirt"
+            },
+            {
+              "cn": "亨利衫",
+              "en": "Henley Shirt"
+            },
+            {
+              "cn": "Polo衫",
+              "en": "Polo Shirt"
+            },
+            {
+              "cn": "古巴领衬衫",
+              "en": "Cuban Collar Shirt"
+            },
+            {
+              "cn": "保龄衫",
+              "en": "Bowling Shirt"
+            }
+          ]
+        },
+        "图案": {
+          "en": "Pattern",
+          "words": [
+            {
+              "cn": "纯色",
+              "en": "Solid Color"
+            },
+            {
+              "cn": "条纹",
+              "en": "Striped"
+            },
+            {
+              "cn": "格纹",
+              "en": "Plaid"
+            },
+            {
+              "cn": "格子",
+              "en": "Checkered"
+            },
+            {
+              "cn": "印花",
+              "en": "Printed"
+            },
+            {
+              "cn": "刺绣",
+              "en": "Embroidered"
+            },
+            {
+              "cn": "拼色",
+              "en": "Color Block"
+            },
+            {
+              "cn": "渐变",
+              "en": "Gradient"
+            },
+            {
+              "cn": "波点",
+              "en": "Polka Dot"
+            },
+            {
+              "cn": "迷彩",
+              "en": "Camo"
+            },
+            {
+              "cn": "花卉",
+              "en": "Floral"
+            },
+            {
+              "cn": "字母",
+              "en": "Letter Print"
+            }
+          ]
+        },
+        "领型": {
+          "en": "Neckline",
+          "words": [
+            {
+              "cn": "翻领",
+              "en": "Turn-down Collar"
+            },
+            {
+              "cn": "立领",
+              "en": "Stand Collar"
+            },
+            {
+              "cn": "亨利领",
+              "en": "Henley Collar"
+            },
+            {
+              "cn": "古巴领",
+              "en": "Cuban Collar"
+            },
+            {
+              "cn": "Polo领",
+              "en": "Polo Collar"
+            },
+            {
+              "cn": "扣领",
+              "en": "Button-down Collar"
+            },
+            {
+              "cn": "V领",
+              "en": "V-Neck"
+            },
+            {
+              "cn": "圆领",
+              "en": "Crew Neck"
+            },
+            {
+              "cn": "半开领",
+              "en": "Half-zip Collar"
+            }
+          ]
+        },
+        "袖长": {
+          "en": "Sleeve",
+          "words": [
+            {
+              "cn": "长袖",
+              "en": "Long Sleeve"
+            },
+            {
+              "cn": "短袖",
+              "en": "Short Sleeve"
+            },
+            {
+              "cn": "七分袖",
+              "en": "3/4 Sleeve"
+            },
+            {
+              "cn": "五分袖",
+              "en": "Half Sleeve"
+            },
+            {
+              "cn": "无袖",
+              "en": "Sleeveless"
+            }
+          ]
+        },
+        "版型": {
+          "en": "Fit",
+          "words": [
+            {
+              "cn": "修身版",
+              "en": "Slim Fit"
+            },
+            {
+              "cn": "常规版",
+              "en": "Regular Fit"
+            },
+            {
+              "cn": "宽松版",
+              "en": "Loose Fit"
+            },
+            {
+              "cn": "合身版",
+              "en": "Tailored Fit"
+            },
+            {
+              "cn": "oversize风",
+              "en": "Oversized"
+            }
+          ]
+        },
+        "风格": {
+          "en": "Style",
+          "words": [
+            {
+              "cn": "商务风",
+              "en": "Business"
+            },
+            {
+              "cn": "休闲日常",
+              "en": "Casual"
+            },
+            {
+              "cn": "复古",
+              "en": "Vintage"
+            },
+            {
+              "cn": "街头",
+              "en": "Streetwear"
+            },
+            {
+              "cn": "通勤风",
+              "en": "Commuter"
+            },
+            {
+              "cn": "度假风",
+              "en": "Resort"
+            },
+            {
+              "cn": "学院风",
+              "en": "Preppy"
+            },
+            {
+              "cn": "潮流",
+              "en": "Trendy"
+            }
+          ]
+        },
+        "场景": {
+          "en": "Occasion",
+          "words": [
+            {
+              "cn": "商务",
+              "en": "Business"
+            },
+            {
+              "cn": "办公室",
+              "en": "Office"
+            },
+            {
+              "cn": "日常",
+              "en": "Daily"
+            },
+            {
+              "cn": "通勤",
+              "en": "Commuting"
+            },
+            {
+              "cn": "休闲",
+              "en": "Casual"
+            },
+            {
+              "cn": "约会",
+              "en": "Dating"
+            },
+            {
+              "cn": "度假",
+              "en": "Vacation"
+            },
+            {
+              "cn": "派对",
+              "en": "Party"
+            },
+            {
+              "cn": "正装",
+              "en": "Formal"
+            },
+            {
+              "cn": "职场",
+              "en": "Work"
+            }
+          ]
+        },
+        "面料": {
+          "en": "Material",
+          "words": [
+            {
+              "cn": "纯棉",
+              "en": "100% Cotton"
+            },
+            {
+              "cn": "棉混纺",
+              "en": "Cotton Blend"
+            },
+            {
+              "cn": "亚麻",
+              "en": "Linen"
+            },
+            {
+              "cn": "棉麻",
+              "en": "Cotton Linen"
+            },
+            {
+              "cn": "雪纺",
+              "en": "Chiffon"
+            },
+            {
+              "cn": "牛津布",
+              "en": "Oxford Cloth"
+            },
+            {
+              "cn": "法兰绒",
+              "en": "Flannel"
+            },
+            {
+              "cn": "灯芯绒",
+              "en": "Corduroy"
+            },
+            {
+              "cn": "丝绸",
+              "en": "Silk"
+            },
+            {
+              "cn": "涤纶",
+              "en": "Polyester"
+            }
+          ]
+        },
+        "功能": {
+          "en": "Feature",
+          "words": [
+            {
+              "cn": "免烫",
+              "en": "Non-Iron"
+            },
+            {
+              "cn": "防皱",
+              "en": "Wrinkle-Resistant"
+            },
+            {
+              "cn": "透气",
+              "en": "Breathable"
+            },
+            {
+              "cn": "弹力",
+              "en": "Stretch"
+            },
+            {
+              "cn": "速干",
+              "en": "Quick-Dry"
+            },
+            {
+              "cn": "吸湿排汗",
+              "en": "Moisture-Wicking"
+            }
+          ]
+        },
+        "闭合方式": {
+          "en": "Closure",
+          "words": [
+            {
+              "cn": "纽扣门襟",
+              "en": "Button Closure"
+            },
+            {
+              "cn": "拉链",
+              "en": "Zipper"
+            },
+            {
+              "cn": "半拉链",
+              "en": "Half-Zip"
+            },
+            {
+              "cn": "套头",
+              "en": "Pullover"
+            },
+            {
+              "cn": "单排扣",
+              "en": "Single-Breasted"
+            },
+            {
+              "cn": "双排扣",
+              "en": "Double-Breasted"
+            }
+          ]
+        },
+        "颜色": {
+          "en": "Color",
+          "words": [
+            {
+              "cn": "白色",
+              "en": "White"
+            },
+            {
+              "cn": "蓝色",
+              "en": "Blue"
+            },
+            {
+              "cn": "浅蓝",
+              "en": "Light Blue"
+            },
+            {
+              "cn": "深蓝",
+              "en": "Navy"
+            },
+            {
+              "cn": "黑色",
+              "en": "Black"
+            },
+            {
+              "cn": "灰色",
+              "en": "Gray"
+            },
+            {
+              "cn": "粉色",
+              "en": "Pink"
+            },
+            {
+              "cn": "绿色",
+              "en": "Green"
+            },
+            {
+              "cn": "卡其色",
+              "en": "Khaki"
+            },
+            {
+              "cn": "红色",
+              "en": "Red"
+            }
+          ]
+        },
+        "目标人群": {
+          "en": "Target",
+          "words": [
+            {
+              "cn": "男士",
+              "en": "Men's"
+            },
+            {
+              "cn": "大码男士",
+              "en": "Plus Size Men's"
+            },
+            {
+              "cn": "男童",
+              "en": "Boys'"
+            },
+            {
+              "cn": "中性",
+              "en": "Unisex"
+            }
+          ]
+        },
+        "季节": {
+          "en": "Season",
+          "words": [
+            {
+              "cn": "春季",
+              "en": "Spring"
+            },
+            {
+              "cn": "夏季",
+              "en": "Summer"
+            },
+            {
+              "cn": "秋季",
+              "en": "Autumn"
+            },
+            {
+              "cn": "冬季",
+              "en": "Winter"
+            },
+            {
+              "cn": "四季",
+              "en": "All Seasons"
+            },
+            {
+              "cn": "秋冬",
+              "en": "Autumn/Winter"
+            }
+          ]
+        }
+      },
+      "combo_rule": {
+        "must": [
+          "目标人群",
+          "品类",
+          "图案",
+          "领型"
+        ],
+        "high": [
+          "场景",
+          "袖长",
+          "风格",
+          "版型"
+        ],
+        "extra": [
+          "面料",
+          "闭合方式",
+          "颜色",
+          "功能",
+          "季节"
+        ]
+      }
+    },
+    "jacket": {
+      "name": "外套夹克",
+      "dimensions": {
+        "品类": {
+          "en": "Category",
+          "words": [
+            {
+              "cn": "夹克",
+              "en": "Jacket"
+            },
+            {
+              "cn": "外套",
+              "en": "Outerwear"
+            },
+            {
+              "cn": "皮衣",
+              "en": "Leather Jacket"
+            },
+            {
+              "cn": "人造皮夹克",
+              "en": "Faux Leather Jacket"
+            },
+            {
+              "cn": "棒球服",
+              "en": "Bomber Jacket"
+            },
+            {
+              "cn": "飞行夹克",
+              "en": "Flight Jacket"
+            },
+            {
+              "cn": "工装夹克",
+              "en": "Work Jacket"
+            },
+            {
+              "cn": "棉服",
+              "en": "Puffer Jacket"
+            },
+            {
+              "cn": "抓绒夹克",
+              "en": "Fleece Jacket"
+            },
+            {
+              "cn": "风衣",
+              "en": "Trench Coat"
+            },
+            {
+              "cn": "派克大衣",
+              "en": "Parka"
+            },
+            {
+              "cn": "软壳夹克",
+              "en": "Softshell Jacket"
+            },
+            {
+              "cn": "防水夹克",
+              "en": "Waterproof Jacket"
+            },
+            {
+              "cn": "羊毛夹克",
+              "en": "Wool Jacket"
+            },
+            {
+              "cn": "牛仔外套",
+              "en": "Denim Jacket"
+            },
+            {
+              "cn": "马甲",
+              "en": "Vest"
+            }
+          ]
+        },
+        "版型": {
+          "en": "Fit",
+          "words": [
+            {
+              "cn": "修身版",
+              "en": "Slim Fit"
+            },
+            {
+              "cn": "常规版",
+              "en": "Regular Fit"
+            },
+            {
+              "cn": "宽松版",
+              "en": "Loose Fit"
+            },
+            {
+              "cn": "廓形版",
+              "en": "Oversized Fit"
+            },
+            {
+              "cn": "合身版",
+              "en": "Tailored Fit"
+            }
+          ]
+        },
+        "领型": {
+          "en": "Neckline",
+          "words": [
+            {
+              "cn": "立领",
+              "en": "Stand Collar"
+            },
+            {
+              "cn": "翻领",
+              "en": "Lapel Collar"
+            },
+            {
+              "cn": "连帽",
+              "en": "Hooded"
+            },
+            {
+              "cn": "可拆卸帽",
+              "en": "Detachable Hood"
+            },
+            {
+              "cn": "无领",
+              "en": "Collarless"
+            },
+            {
+              "cn": "罗纹领",
+              "en": "Ribbed Collar"
+            },
+            {
+              "cn": "西装领",
+              "en": "Notched Lapel"
+            }
+          ]
+        },
+        "闭合方式": {
+          "en": "Closure",
+          "words": [
+            {
+              "cn": "拉链",
+              "en": "Zipper Closure"
+            },
+            {
+              "cn": "纽扣",
+              "en": "Button Closure"
+            },
+            {
+              "cn": "按扣",
+              "en": "Snap Closure"
+            },
+            {
+              "cn": "抽绳",
+              "en": "Drawstring"
+            },
+            {
+              "cn": "搭扣",
+              "en": "Buckle"
+            },
+            {
+              "cn": "魔术贴",
+              "en": "Velcro"
+            }
+          ]
+        },
+        "风格": {
+          "en": "Style",
+          "words": [
+            {
+              "cn": "工装风",
+              "en": "Workwear"
+            },
+            {
+              "cn": "户外机能",
+              "en": "Techwear"
+            },
+            {
+              "cn": "都市基础风",
+              "en": "Urban Basic"
+            },
+            {
+              "cn": "复古",
+              "en": "Vintage"
+            },
+            {
+              "cn": "运动风",
+              "en": "Athletic"
+            },
+            {
+              "cn": "街头",
+              "en": "Streetwear"
+            },
+            {
+              "cn": "商务风",
+              "en": "Business"
+            },
+            {
+              "cn": "学院风",
+              "en": "Preppy"
+            },
+            {
+              "cn": "军事风",
+              "en": "Military"
+            }
+          ]
+        },
+        "图案": {
+          "en": "Pattern",
+          "words": [
+            {
+              "cn": "纯色",
+              "en": "Solid Color"
+            },
+            {
+              "cn": "迷彩",
+              "en": "Camo"
+            },
+            {
+              "cn": "拼色",
+              "en": "Color Block"
+            },
+            {
+              "cn": "条纹",
+              "en": "Striped"
+            },
+            {
+              "cn": "格纹",
+              "en": "Plaid"
+            },
+            {
+              "cn": "印花",
+              "en": "Printed"
+            },
+            {
+              "cn": "刺绣",
+              "en": "Embroidered"
+            },
+            {
+              "cn": "撞色",
+              "en": "Contrast"
+            }
+          ]
+        },
+        "场景": {
+          "en": "Occasion",
+          "words": [
+            {
+              "cn": "户外",
+              "en": "Outdoor"
+            },
+            {
+              "cn": "日常",
+              "en": "Daily"
+            },
+            {
+              "cn": "通勤",
+              "en": "Commuting"
+            },
+            {
+              "cn": "骑行",
+              "en": "Cycling"
+            },
+            {
+              "cn": "徒步",
+              "en": "Hiking"
+            },
+            {
+              "cn": "露营",
+              "en": "Camping"
+            },
+            {
+              "cn": "旅行",
+              "en": "Travel"
+            },
+            {
+              "cn": "商务",
+              "en": "Business"
+            },
+            {
+              "cn": "休闲",
+              "en": "Casual"
+            },
+            {
+              "cn": "运动",
+              "en": "Sports"
+            }
+          ]
+        },
+        "功能": {
+          "en": "Feature",
+          "words": [
+            {
+              "cn": "防风",
+              "en": "Windproof"
+            },
+            {
+              "cn": "防水",
+              "en": "Waterproof"
+            },
+            {
+              "cn": "保暖",
+              "en": "Warm"
+            },
+            {
+              "cn": "透气",
+              "en": "Breathable"
+            },
+            {
+              "cn": "速干",
+              "en": "Quick-Dry"
+            },
+            {
+              "cn": "反光",
+              "en": "Reflective"
+            },
+            {
+              "cn": "防泼水",
+              "en": "Water-Repellent"
+            },
+            {
+              "cn": "弹力",
+              "en": "Stretch"
+            },
+            {
+              "cn": "轻量",
+              "en": "Lightweight"
+            }
+          ]
+        },
+        "面料": {
+          "en": "Material",
+          "words": [
+            {
+              "cn": "棉",
+              "en": "Cotton"
+            },
+            {
+              "cn": "聚酯纤维",
+              "en": "Polyester"
+            },
+            {
+              "cn": "锦纶",
+              "en": "Nylon"
+            },
+            {
+              "cn": "皮革",
+              "en": "Leather"
+            },
+            {
+              "cn": "人造皮",
+              "en": "PU Leather"
+            },
+            {
+              "cn": "帆布",
+              "en": "Canvas"
+            },
+            {
+              "cn": "牛仔",
+              "en": "Denim"
+            },
+            {
+              "cn": "抓绒",
+              "en": "Fleece"
+            },
+            {
+              "cn": "摇粒绒",
+              "en": "Polar Fleece"
+            },
+            {
+              "cn": "羊毛",
+              "en": "Wool"
+            },
+            {
+              "cn": "羊羔绒",
+              "en": "Sherpa"
+            },
+            {
+              "cn": "防风面料",
+              "en": "Windproof Fabric"
+            }
+          ]
+        },
+        "细节": {
+          "en": "Detail",
+          "words": [
+            {
+              "cn": "多口袋",
+              "en": "Multi-Pocket"
+            },
+            {
+              "cn": "拉链口袋",
+              "en": "Zipper Pocket"
+            },
+            {
+              "cn": "胸前口袋",
+              "en": "Chest Pocket"
+            },
+            {
+              "cn": "罗纹下摆",
+              "en": "Ribbed Hem"
+            },
+            {
+              "cn": "可拆卸帽",
+              "en": "Detachable Hood"
+            },
+            {
+              "cn": "抽绳下摆",
+              "en": "Drawstring Hem"
+            },
+            {
+              "cn": "腋下透气",
+              "en": "Underarm Vents"
+            }
+          ]
+        },
+        "季节": {
+          "en": "Season",
+          "words": [
+            {
+              "cn": "春季",
+              "en": "Spring"
+            },
+            {
+              "cn": "夏季",
+              "en": "Summer"
+            },
+            {
+              "cn": "秋季",
+              "en": "Autumn"
+            },
+            {
+              "cn": "冬季",
+              "en": "Winter"
+            },
+            {
+              "cn": "秋冬",
+              "en": "Fall/Winter"
+            },
+            {
+              "cn": "四季",
+              "en": "All Seasons"
+            }
+          ]
+        },
+        "颜色": {
+          "en": "Color",
+          "words": [
+            {
+              "cn": "黑色",
+              "en": "Black"
+            },
+            {
+              "cn": "军绿色",
+              "en": "Army Green"
+            },
+            {
+              "cn": "卡其色",
+              "en": "Khaki"
+            },
+            {
+              "cn": "深蓝色",
+              "en": "Navy"
+            },
+            {
+              "cn": "灰色",
+              "en": "Gray"
+            },
+            {
+              "cn": "棕色",
+              "en": "Brown"
+            },
+            {
+              "cn": "白色",
+              "en": "White"
+            },
+            {
+              "cn": "红色",
+              "en": "Red"
+            },
+            {
+              "cn": "藏青色",
+              "en": "Dark Blue"
+            },
+            {
+              "cn": "驼色",
+              "en": "Camel"
+            }
+          ]
+        },
+        "目标人群": {
+          "en": "Target",
+          "words": [
+            {
+              "cn": "男士",
+              "en": "Men's"
+            },
+            {
+              "cn": "大码男士",
+              "en": "Plus Size Men's"
+            },
+            {
+              "cn": "男童",
+              "en": "Boys'"
+            },
+            {
+              "cn": "中性",
+              "en": "Unisex"
+            }
+          ]
+        }
+      },
+      "combo_rule": {
+        "must": [
+          "目标人群",
+          "品类",
+          "风格"
+        ],
+        "high": [
+          "场景",
+          "版型",
+          "功能",
+          "面料"
+        ],
+        "extra": [
+          "领型",
+          "闭合方式",
+          "细节",
+          "颜色",
+          "图案",
+          "季节"
+        ]
+      }
+    }
+  }
+}
