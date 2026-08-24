@@ -1,183 +1,491 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>去年热销 - 麦杞岐对接服务站</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>去年热销 - 麦杞岐对接服务站</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+body { background: #f5f5f5; }
+
+/* 顶部Header */
+.tp-header {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    color: #fff;
+    padding: 30px 20px;
+    text-align: center;
+    border-bottom: 3px solid #ff6a00;
+}
+.tp-header h1 { font-size: 28px; margin: 0 0 8px; }
+.tp-header .subtitle { font-size: 14px; color: #ccc; }
+
+/* 通知栏 */
+.tp-notice {
+    background: #fff3e0;
+    border: 1px solid #ff6a00;
+    border-radius: 8px;
+    padding: 12px 20px;
+    margin: 15px auto;
+    max-width: 1400px;
+    font-size: 14px;
+    color: #e65100;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.tp-notice .icon { font-size: 20px; }
+
+/* 返回按钮 */
+.back-home-btn {
+    position: fixed;
+    top: 15px; left: 15px;
+    background: #ff6a00;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 14px;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.back-home-btn:hover { background: #e55a00; }
+
+/* 大板块Tab切换 */
+.tp-tabs {
+    display: flex;
+    gap: 12px;
+    max-width: 1400px;
+    margin: 0 auto 20px;
+}
+.tp-tab {
+    flex: 1;
+    padding: 14px 24px;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.2s;
+    border: 2px solid #e0e0e0;
+    background: #fff;
+    color: #333;
+}
+.tp-tab.active {
+    background: #ff6a00;
+    color: #fff;
+    border-color: #ff6a00;
+}
+.tp-tab:hover:not(.active) {
+    border-color: #ff6a00;
+    color: #ff6a00;
+}
+.tp-panel { display: block; }
+.tp-panel.hidden { display: none; }
+
+/* 布局：侧边栏 + 主内容 */
+.tp-layout {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    gap: 0;
+    min-height: 600px;
+}
+
+/* 侧边栏 */
+.tp-sidebar {
+    width: 180px;
+    background: #1a1a1a;
+    color: #fff;
+    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+.tp-sidebar h3 {
+    font-size: 14px;
+    color: #ff6a00;
+    text-transform: uppercase;
+    padding: 0 20px 15px;
+    border-bottom: 1px solid #333;
+    margin-bottom: 10px;
+}
+.tp-sidebar a {
+    display: block;
+    padding: 12px 20px;
+    color: #ccc;
+    text-decoration: none;
+    font-size: 15px;
+    transition: all 0.3s;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+}
+.tp-sidebar a:hover {
+    background: rgba(255,106,0,0.15);
+    color: #ff6a00;
+    border-left-color: #ff6a00;
+}
+.tp-sidebar a.active {
+    background: #ff6a00;
+    color: #fff;
+    border-left-color: #fff;
+}
+.tp-sidebar .sep {
+    height: 1px;
+    background: #333;
+    margin: 10px 20px;
+}
+
+/* 主内容区 */
+.tp-content {
+    flex: 1;
+    padding: 20px;
+    overflow: hidden;
+}
+
+/* 区域标题 */
+.region-section {
+    margin-bottom: 40px;
+}
+.region-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #1a1a1a;
+    padding: 12px 20px;
+    background: linear-gradient(90deg, #fff3e0, transparent);
+    border-left: 4px solid #ff6a00;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.region-title .badge {
+    background: #ff6a00;
+    color: #fff;
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+/* 商品网格 - 一行固定15个 */
+.tp-grid {
+    display: grid;
+    grid-template-columns: repeat(15, 1fr);
+    gap: 6px;
+    margin-bottom: 20px;
+}
+.tp-card {
+    background: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+.tp-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    z-index: 5;
+    position: relative;
+}
+.tp-card .img-wrap {
+    width: 100%;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    background: #f0f0f0;
+}
+.tp-card .img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+.tp-card:hover .img-wrap img {
+    transform: scale(1.08);
+}
+
+/* 弹窗 */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.modal-overlay.show {
+    display: flex;
+}
+.modal-overlay .close-btn {
+    position: absolute;
+    top: 20px; right: 30px;
+    color: #fff;
+    font-size: 36px;
+    cursor: pointer;
+    z-index: 10001;
+}
+.modal-overlay .modal-img {
+    max-width: 80%;
+    max-height: 75vh;
+    border-radius: 8px;
+}
+.modal-overlay .modal-info {
+    color: #fff;
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+}
+.modal-overlay .search-link {
+    display: inline-block;
+    margin-top: 10px;
+    background: #ff6a00;
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 14px;
+}
+.modal-overlay .nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+    font-size: 36px;
+    cursor: pointer;
+    padding: 16px;
+    user-select: none;
+}
+.modal-overlay .prev-btn { left: 20px; }
+.modal-overlay .next-btn { right: 20px; }
+
+/* 加载中 */
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #999;
+    font-size: 16px;
+}
+
+/* 响应式 */
+@media (max-width: 1200px) {
+    .tp-grid { grid-template-columns: repeat(10, 1fr); }
+}
+@media (max-width: 768px) {
+    .tp-grid { grid-template-columns: repeat(5, 1fr); }
+    .tp-sidebar { width: 120px; }
+}
+</style>
 </head>
 <body>
-    <header class="site-header">
-        <div class="header-content">
-            <div class="logo">
-                <span class="logo-icon">🔥</span>
-                <span class="logo-text">去年热销</span>
-            </div>
-            <a href="index.html" class="back-home-btn">← 返回首页</a>
+<a href="index.html" class="back-home-btn">← 返回首页</a>
+
+<div class="tp-header">
+    <h1>🔥 去年热销</h1>
+    <div class="subtitle">maggie.xie · OBM2 男装外套夹克 / 衬衫亨利衫</div>
+</div>
+
+<div class="tp-notice">
+    <span class="icon">⚠️</span>
+    <span>以下商品仅供款式参考，不可直接复制上架，如有侵权风险自行承担</span>
+</div>
+
+<!-- 大板块切换 -->
+<div class="tp-tabs">
+    <div class="tp-tab active" data-tab="外套夹克" onclick="switchTab('外套夹克')">🧥 外套夹克</div>
+    <div class="tp-tab" data-tab="衬衫亨利衫" onclick="switchTab('衬衫亨利衫')">👕 衬衫/亨利衫</div>
+</div>
+
+<!-- 外套夹克面板 -->
+<div class="tp-panel" id="panel-jacket">
+    <div class="tp-layout">
+        <div class="tp-sidebar">
+            <h3>区域导航</h3>
+            <a data-scroll="jacket-欧区">🇪🇺 欧区</a>
+            <a data-scroll="jacket-美区">🇺🇸 美区</a>
+            <a data-scroll="jacket-拉美">🌎 拉美</a>
+            <div class="sep"></div>
+            <a data-scroll="jacket-top">↑ 回到顶部</a>
         </div>
-    </header>
-
-    <div class="top-notice" style="background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%); color: #ff6a00; padding: 12px 20px; text-align: center; font-size: 14px; border-bottom: 3px solid #ff6a00;">
-        ⚠️ 以下商品仅供款式参考，不可直接复制上架，如有侵权风险自行承担
-    </div>
-
-    <div class="tab-bar" id="categoryTabs">
-        <button class="tab-btn active" data-tab="外套夹克">🧥 外套夹克</button>
-        <button class="tab-btn" data-tab="衬衫亨利衫">👕 衬衫/亨利衫</button>
-    </div>
-
-    <div class="market-layout">
-        <aside class="market-sidebar" id="sidebar">
-            <h3 class="sidebar-title">区域导航</h3>
-            <div class="sidebar-section">
-                <div class="sidebar-item active" data-region="欧区" data-tab="外套夹克">🇪🇺 欧区 - 外套夹克</div>
-                <div class="sidebar-item" data-region="美区" data-tab="外套夹克">🇺🇸 美区 - 外套夹克</div>
-                <div class="sidebar-item" data-region="拉美" data-tab="外套夹克">🌎 拉美 - 外套夹克</div>
-            </div>
-            <div class="sidebar-section" style="display:none;" id="shirtSidebar">
-                <div class="sidebar-item" data-region="欧区" data-tab="衬衫亨利衫">🇪🇺 欧区 - 衬衫亨利衫</div>
-                <div class="sidebar-item" data-region="美区" data-tab="衬衫亨利衫">🇺🇸 美区 - 衬衫亨利衫</div>
-                <div class="sidebar-item" data-region="拉美" data-tab="衬衫亨利衫">🌎 拉美 - 衬衫亨利衫</div>
-            </div>
-        </aside>
-
-        <main class="market-main">
-            <div id="productGrid"></div>
-            <div id="loadingMsg" style="text-align:center; padding:40px; color:#999;">加载中...</div>
-        </main>
-    </div>
-
-    <!-- Image Modal -->
-    <div class="modal-overlay" id="imageModal" style="display:none;">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">✕</button>
-            <div class="modal-image-wrap">
-                <img id="modalImage" src="" alt="">
-            </div>
-            <div class="modal-info">
-                <button class="search-same-btn" onclick="searchSameProduct()">🔍 搜索识别图片同款</button>
-            </div>
+        <div class="tp-content" id="jacket-content">
+            <div class="loading">正在加载外套夹克数据...</div>
         </div>
     </div>
+</div>
 
-    <footer class="site-footer">
-        <p>本网页所有功能只提供建议，不负任何法律责任，所有资源来源于互联网。</p>
-        <p>如有功能更新需求请联系 <strong>麦杞岐（maggie.xie）</strong></p>
-    </footer>
+<!-- 衬衫/亨利衫面板 -->
+<div class="tp-panel hidden" id="panel-shirt">
+    <div class="tp-layout">
+        <div class="tp-sidebar">
+            <h3>区域导航</h3>
+            <a data-scroll="shirt-欧区">🇪🇺 欧区</a>
+            <a data-scroll="shirt-美区">🇺🇸 美区</a>
+            <a data-scroll="shirt-拉美">🌎 拉美</a>
+            <div class="sep"></div>
+            <a data-scroll="shirt-top">↑ 回到顶部</a>
+        </div>
+        <div class="tp-content" id="shirt-content">
+            <div class="loading">正在加载衬衫/亨利衫数据...</div>
+        </div>
+    </div>
+</div>
 
-    <script>
-        let allProducts = [];
-        let currentTab = '外套夹克';
-        let currentModalUrl = '';
+<!-- 图片放大弹窗 -->
+<div class="modal-overlay" id="img-modal">
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+    <span class="nav-btn prev-btn" onclick="navModal(-1)">&#8249;</span>
+    <span class="nav-btn next-btn" onclick="navModal(1)">&#8250;</span>
+    <img class="modal-img" id="modal-img" src="">
+    <div class="modal-info" id="modal-info"></div>
+</div>
 
-        async function loadData() {
-            try {
-                const resp = await fetch('data/top_products.json');
-                if (!resp.ok) throw new Error('fetch failed');
-                allProducts = await resp.json();
-                document.getElementById('loadingMsg').style.display = 'none';
-                renderProducts();
-            } catch(e) {
-                document.getElementById('loadingMsg').textContent = '数据加载失败，请确保 data/top_products.json 文件存在';
-                document.getElementById('loadingMsg').style.color = '#ff4444';
+<footer class="site-footer">
+    <p>本网页所有功能只提供建议，不负任何法律责任，所有资源来源于互联网。</p>
+    <p>如有功能更新需求请联系 <span class="footer-accent">麦杞岐（maggie.xie）</span></p>
+</footer>
+
+<script>
+var allProducts = [];
+var currentTab = '外套夹克';
+var modalImages = [];
+var currentModalIdx = -1;
+
+async function loadData() {
+    try {
+        var resp = await fetch('data/top_products.json');
+        if (!resp.ok) throw new Error('fetch failed');
+        allProducts = await resp.json();
+        renderAll();
+    } catch(e) {
+        document.getElementById('jacket-content').innerHTML = '<div class="loading" style="color:#f00;">数据加载失败，请确保 data/top_products.json 文件存在</div>';
+        document.getElementById('shirt-content').innerHTML = '<div class="loading" style="color:#f00;">数据加载失败，请确保 data/top_products.json 文件存在</div>';
+    }
+}
+
+function getRegionFlag(region) {
+    var flags = {'欧区':'🇪🇺', '美区':'🇺🇸', '拉美':'🌎'};
+    return flags[region] || '';
+}
+
+function renderPanel(containerId, prefix, categoryKey) {
+    var container = document.getElementById(containerId);
+    var panelData = allProducts.filter(function(p) { return p.category === categoryKey; });
+
+    if (panelData.length === 0) {
+        container.innerHTML = '<div class="loading">暂无' + (categoryKey === '外套夹克' ? '外套夹克' : '衬衫/亨利衫') + '数据</div>';
+        return;
+    }
+
+    var regions = ['欧区', '美区', '拉美'];
+    var html = '<div id="' + prefix + '-top"></div>';
+
+    regions.forEach(function(region) {
+        var regionData = panelData.filter(function(p) { return p.region === region; });
+        if (regionData.length === 0) return;
+
+        html += '<div class="region-section" id="' + prefix + '-' + region + '">';
+        html += '<div class="region-title">' + getRegionFlag(region) + ' ' + region + ' <span class="badge">' + regionData.length + '款</span></div>';
+        html += '<div class="tp-grid">';
+
+        regionData.forEach(function(p) {
+            if (!p.imageUrl) return;
+            var idx = modalImages.length;
+            modalImages.push({ url: p.imageUrl, region: region, category: categoryKey });
+            html += '<div class="tp-card" onclick="openModal(' + idx + ')">';
+            html += '<div class="img-wrap">';
+            html += '<img src="' + p.imageUrl + '" alt="商品图" loading="lazy" onerror="this.parentElement.parentElement.style.display=\'none\'">';
+            html += '</div>';
+            html += '</div>';
+        });
+
+        html += '</div></div>';
+    });
+
+    container.innerHTML = html;
+}
+
+function renderAll() {
+    modalImages = [];
+    renderPanel('jacket-content', 'jacket', '外套夹克');
+    renderPanel('shirt-content', 'shirt', '衬衫亨利衫');
+    bindSidebar();
+}
+
+function bindSidebar() {
+    document.querySelectorAll('.tp-sidebar a').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            var targetId = link.dataset.scroll;
+            if (!targetId) return;
+            if (targetId.endsWith('-top')) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
             }
-        }
-
-        function renderProducts() {
-            const grid = document.getElementById('productGrid');
-            const filtered = allProducts.filter(p => p.category === currentTab);
-            
-            const regions = ['欧区', '美区', '拉美'];
-            let html = '';
-            
-            regions.forEach(region => {
-                const regionProducts = filtered.filter(p => p.region === region);
-                if (regionProducts.length === 0) return;
-                
-                html += `<div class="region-section" id="region-${currentTab}-${region}">`;
-                html += `<h2 class="region-title">${getRegionFlag(region)} ${region} <span class="region-count">(${regionProducts.length}款)</span></h2>`;
-                html += `<div class="top-product-grid">`;
-                
-                regionProducts.forEach((p, idx) => {
-                    if (!p.imageUrl) return;
-                    html += `<div class="top-product-card">`;
-                    html += `<div class="top-product-image" onclick="openModal('${p.imageUrl}')">`;
-                    html += `<img src="${p.imageUrl}" alt="商品图" loading="lazy" onerror="this.parentElement.style.display='none'">`;
-                    html += `</div>`;
-                    html += `</div>`;
-                });
-                
-                html += `</div></div>`;
-            });
-            
-            grid.innerHTML = html;
-        }
-
-        function getRegionFlag(region) {
-            const flags = {'欧区':'🇪🇺', '美区':'🇺🇸', '拉美':'🌎'};
-            return flags[region] || '';
-        }
-
-        // Tab switching
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentTab = btn.dataset.tab;
-                
-                // Update sidebar
-                const jacketSidebar = document.querySelector('.sidebar-section:not(#shirtSidebar)');
-                if (currentTab === '外套夹克') {
-                    jacketSidebar.style.display = 'block';
-                    document.getElementById('shirtSidebar').style.display = 'none';
-                } else {
-                    jacketSidebar.style.display = 'none';
-                    document.getElementById('shirtSidebar').style.display = 'block';
-                }
-                
-                // Reset active sidebar item
-                document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
-                const firstItem = document.querySelector(currentTab === '外套夹克' ? '.sidebar-section:not(#shirtSidebar) .sidebar-item' : '#shirtSidebar .sidebar-item');
-                if (firstItem) firstItem.classList.add('active');
-                
-                renderProducts();
-            });
+            var target = document.getElementById(targetId);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         });
+    });
+}
 
-        // Sidebar navigation
-        document.querySelectorAll('.sidebar-item').forEach(item => {
-            item.addEventListener('click', () => {
-                document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
-                item.classList.add('active');
-                const region = item.dataset.region;
-                const tab = item.dataset.tab;
-                const target = document.getElementById(`region-${tab}-${region}`);
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
+function switchTab(tab) {
+    document.querySelectorAll('.tp-tab').forEach(function(t) {
+        t.classList.toggle('active', t.dataset.tab === tab);
+    });
+    document.getElementById('panel-jacket').classList.toggle('hidden', tab !== '外套夹克');
+    document.getElementById('panel-shirt').classList.toggle('hidden', tab !== '衬衫亨利衫');
+    currentTab = tab;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-        // Modal functions
-        function openModal(url) {
-            currentModalUrl = url;
-            document.getElementById('modalImage').src = url;
-            document.getElementById('imageModal').style.display = 'flex';
-        }
+function openModal(idx) {
+    currentModalIdx = idx;
+    showModal();
+}
 
-        function closeModal() {
-            document.getElementById('imageModal').style.display = 'none';
-        }
+function showModal() {
+    var item = modalImages[currentModalIdx];
+    if (!item) return;
+    var modal = document.getElementById('img-modal');
+    var img = document.getElementById('modal-img');
+    var info = document.getElementById('modal-info');
 
-        function searchSameProduct() {
-            window.open('https://lens.google.com/uploadbyurl?url=' + encodeURIComponent(currentModalUrl), '_blank');
-        }
+    img.src = item.url;
+    img.style.display = 'block';
 
-        document.getElementById('imageModal').addEventListener('click', (e) => {
-            if (e.target.id === 'imageModal') closeModal();
-        });
+    var infoHtml = '<div>' + getRegionFlag(item.region) + ' ' + item.region + ' · ' + item.category + '</div>';
+    var searchUrl = 'https://lens.google.com/uploadbyurl?url=' + encodeURIComponent(item.url);
+    infoHtml += '<a href="' + searchUrl + '" target="_blank" class="search-link">🔍 搜索识别图片同款</a>';
+    info.innerHTML = infoHtml;
+    modal.classList.add('show');
+}
 
-        loadData();
-    </script>
+function closeModal() {
+    document.getElementById('img-modal').classList.remove('show');
+}
+
+function navModal(dir) {
+    currentModalIdx += dir;
+    if (currentModalIdx < 0) currentModalIdx = modalImages.length - 1;
+    if (currentModalIdx >= modalImages.length) currentModalIdx = 0;
+    showModal();
+}
+
+document.addEventListener('keydown', function(e) {
+    if (!document.getElementById('img-modal').classList.contains('show')) return;
+    if (e.key === 'Escape') closeModal();
+    if (e.key === 'ArrowLeft') navModal(-1);
+    if (e.key === 'ArrowRight') navModal(1);
+});
+
+document.getElementById('img-modal').addEventListener('click', function(e) {
+    if (e.target.id === 'img-modal') closeModal();
+});
+
+loadData();
+</script>
 </body>
 </html>
