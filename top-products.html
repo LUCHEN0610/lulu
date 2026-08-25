@@ -1,183 +1,361 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>去年热销 - 麦杞岐对接服务站</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>去年热销 - 麦杞岐对接服务站</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+body { background: #f5f5f5; }
+.top-header {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    color: #fff;
+    padding: 30px 20px;
+    text-align: center;
+    border-bottom: 3px solid #ff6a00;
+}
+.top-header h1 { font-size: 28px; margin: 0 0 8px; }
+.top-header .subtitle { font-size: 14px; color: #ccc; }
+.top-notice-bar {
+    background: #fff3e0;
+    border: 1px solid #ff6a00;
+    border-radius: 8px;
+    padding: 12px 20px;
+    margin: 15px auto;
+    max-width: 1400px;
+    font-size: 14px;
+    color: #e65100;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+/* Tab切换 - 和市场需求一致 */
+.top-tabs {
+    display: flex;
+    gap: 12px;
+    max-width: 1400px;
+    margin: 0 auto 20px;
+}
+.top-tab {
+    flex: 1;
+    padding: 14px 24px;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.2s;
+    border: 2px solid #e0e0e0;
+    background: #fff;
+    color: #333;
+}
+.top-tab.active {
+    background: #ff6a00;
+    color: #fff;
+    border-color: #ff6a00;
+}
+.top-tab:hover:not(.active) {
+    border-color: #ff6a00;
+    color: #ff6a00;
+}
+/* 主体布局 - 和市场需求一致 */
+.top-layout {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    gap: 0;
+    min-height: 600px;
+}
+.top-sidebar {
+    width: 180px;
+    background: #1a1a1a;
+    color: #fff;
+    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+.top-sidebar h3 {
+    font-size: 14px;
+    color: #ff6a00;
+    text-transform: uppercase;
+    padding: 0 20px 15px;
+    border-bottom: 1px solid #333;
+    margin-bottom: 10px;
+}
+.top-sidebar a {
+    display: block;
+    padding: 12px 20px;
+    color: #ccc;
+    text-decoration: none;
+    font-size: 15px;
+    transition: all 0.3s;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+}
+.top-sidebar a:hover {
+    background: rgba(255,106,0,0.15);
+    color: #ff6a00;
+    border-left-color: #ff6a00;
+}
+.top-sidebar a.active {
+    background: #ff6a00;
+    color: #fff;
+    border-left-color: #fff;
+}
+.top-sidebar .sep {
+    height: 1px;
+    background: #333;
+    margin: 10px 20px;
+}
+.top-content {
+    flex: 1;
+    padding: 20px;
+    overflow: hidden;
+}
+/* 区域区块 - 和市场需求一致 */
+.region-section {
+    margin-bottom: 40px;
+}
+.region-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #1a1a1a;
+    padding: 12px 20px;
+    background: linear-gradient(90deg, #fff3e0, transparent);
+    border-left: 4px solid #ff6a00;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.region-title .badge {
+    background: #ff6a00;
+    color: #fff;
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+/* 图片弹窗 */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.modal-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+}
+.modal-close {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    background: #ff6a00;
+    color: #fff;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+}
+.modal-image-wrap {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.modal-image-wrap img {
+    max-width: 80vw;
+    max-height: 70vh;
+    display: block;
+}
+.modal-info {
+    text-align: center;
+    margin-top: 15px;
+}
+.search-same-btn {
+    background: #ff6a00;
+    color: #fff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.search-same-btn:hover {
+    background: #e65100;
+}
+.loading-msg {
+    text-align: center;
+    padding: 40px;
+    color: #999;
+    font-size: 16px;
+}
+</style>
 </head>
 <body>
-    <header class="site-header">
-        <div class="header-content">
-            <div class="logo">
-                <span class="logo-icon">🔥</span>
-                <span class="logo-text">去年热销</span>
-            </div>
-            <a href="index.html" class="back-home-btn">← 返回首页</a>
+
+<div class="top-header">
+    <h1>🔥 去年热销</h1>
+    <div class="subtitle">去年10月各区域热销商品参考 · 点击图片可放大查看并搜索同款</div>
+</div>
+
+<div class="top-notice-bar">
+    <span style="font-size: 20px;">⚠️</span>
+    <span>以下商品仅供款式参考，不可直接复制上架，如有侵权风险自行承担</span>
+</div>
+
+<!-- 大板块Tab切换 -->
+<div class="top-tabs">
+    <div class="top-tab active" data-tab="外套夹克" onclick="switchTab('外套夹克')">🧥 外套夹克</div>
+    <div class="top-tab" data-tab="衬衫亨利衫" onclick="switchTab('衬衫亨利衫')">👕 衬衫/亨利衫</div>
+</div>
+
+<div class="top-layout">
+    <!-- 侧边导航 -->
+    <aside class="top-sidebar" id="sidebar">
+        <h3>区域导航</h3>
+        <div id="sidebar-items"></div>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="top-content">
+        <div id="productGrid"></div>
+        <div id="loadingMsg" class="loading-msg">加载中...</div>
+    </main>
+</div>
+
+<!-- 图片弹窗 -->
+<div class="modal-overlay" id="imageModal" style="display:none;">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <div class="modal-image-wrap">
+            <img id="modalImage" src="" alt="">
         </div>
-    </header>
-
-    <div class="top-notice" style="background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%); color: #ff6a00; padding: 12px 20px; text-align: center; font-size: 14px; border-bottom: 3px solid #ff6a00;">
-        ⚠️ 以下商品仅供款式参考，不可直接复制上架，如有侵权风险自行承担
-    </div>
-
-    <div class="tab-bar" id="categoryTabs">
-        <button class="tab-btn active" data-tab="外套夹克">🧥 外套夹克</button>
-        <button class="tab-btn" data-tab="衬衫亨利衫">👕 衬衫/亨利衫</button>
-    </div>
-
-    <div class="market-layout">
-        <aside class="market-sidebar" id="sidebar">
-            <h3 class="sidebar-title">区域导航</h3>
-            <div class="sidebar-section">
-                <div class="sidebar-item active" data-region="欧区" data-tab="外套夹克">🇪🇺 欧区 - 外套夹克</div>
-                <div class="sidebar-item" data-region="美区" data-tab="外套夹克">🇺🇸 美区 - 外套夹克</div>
-                <div class="sidebar-item" data-region="拉美" data-tab="外套夹克">🌎 拉美 - 外套夹克</div>
-            </div>
-            <div class="sidebar-section" style="display:none;" id="shirtSidebar">
-                <div class="sidebar-item" data-region="欧区" data-tab="衬衫亨利衫">🇪🇺 欧区 - 衬衫亨利衫</div>
-                <div class="sidebar-item" data-region="美区" data-tab="衬衫亨利衫">🇺🇸 美区 - 衬衫亨利衫</div>
-                <div class="sidebar-item" data-region="拉美" data-tab="衬衫亨利衫">🌎 拉美 - 衬衫亨利衫</div>
-            </div>
-        </aside>
-
-        <main class="market-main">
-            <div id="productGrid"></div>
-            <div id="loadingMsg" style="text-align:center; padding:40px; color:#999;">加载中...</div>
-        </main>
-    </div>
-
-    <!-- Image Modal -->
-    <div class="modal-overlay" id="imageModal" style="display:none;">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">✕</button>
-            <div class="modal-image-wrap">
-                <img id="modalImage" src="" alt="">
-            </div>
-            <div class="modal-info">
-                <button class="search-same-btn" onclick="searchSameProduct()">🔍 搜索识别图片同款</button>
-            </div>
+        <div class="modal-info">
+            <button class="search-same-btn" onclick="searchSameProduct()">🔍 搜索识别图片同款</button>
         </div>
     </div>
+</div>
 
-    <footer class="site-footer">
-        <p>本网页所有功能只提供建议，不负任何法律责任，所有资源来源于互联网。</p>
-        <p>如有功能更新需求请联系 <strong>麦杞岐（maggie.xie）</strong></p>
-    </footer>
+<footer class="site-footer">
+    <p>本网页所有功能只提供建议，不负任何法律责任，所有资源来源于互联网。</p>
+    <p>如有功能更新需求请联系 <span class="footer-accent">麦杞岐（maggie.xie）</span></p>
+</footer>
 
-    <script>
-        let allProducts = [];
-        let currentTab = '外套夹克';
-        let currentModalUrl = '';
+<script>
+let allProducts = [];
+let currentTab = '外套夹克';
+let currentModalUrl = '';
 
-        async function loadData() {
-            try {
-                const resp = await fetch('data/top_products.json');
-                if (!resp.ok) throw new Error('fetch failed');
-                allProducts = await resp.json();
-                document.getElementById('loadingMsg').style.display = 'none';
-                renderProducts();
-            } catch(e) {
-                document.getElementById('loadingMsg').textContent = '数据加载失败，请确保 data/top_products.json 文件存在';
-                document.getElementById('loadingMsg').style.color = '#ff4444';
-            }
-        }
+const regions = [
+    { key: '欧区', flag: '🇪🇺' },
+    { key: '美区', flag: '🇺🇸' },
+    { key: '拉美', flag: '🌎' }
+];
 
-        function renderProducts() {
-            const grid = document.getElementById('productGrid');
-            const filtered = allProducts.filter(p => p.category === currentTab);
-            
-            const regions = ['欧区', '美区', '拉美'];
-            let html = '';
-            
-            regions.forEach(region => {
-                const regionProducts = filtered.filter(p => p.region === region);
-                if (regionProducts.length === 0) return;
-                
-                html += `<div class="region-section" id="region-${currentTab}-${region}">`;
-                html += `<h2 class="region-title">${getRegionFlag(region)} ${region} <span class="region-count">(${regionProducts.length}款)</span></h2>`;
-                html += `<div class="top-product-grid">`;
-                
-                regionProducts.forEach((p, idx) => {
-                    if (!p.imageUrl) return;
-                    html += `<div class="top-product-card">`;
-                    html += `<div class="top-product-image" onclick="openModal('${p.imageUrl}')">`;
-                    html += `<img src="${p.imageUrl}" alt="商品图" loading="lazy" onerror="this.parentElement.style.display='none'">`;
-                    html += `</div>`;
-                    html += `</div>`;
-                });
-                
-                html += `</div></div>`;
-            });
-            
-            grid.innerHTML = html;
-        }
+async function loadData() {
+    try {
+        const resp = await fetch('data/top_products.json');
+        if (!resp.ok) throw new Error('fetch failed');
+        allProducts = await resp.json();
+        document.getElementById('loadingMsg').style.display = 'none';
+        renderSidebar();
+        renderProducts();
+    } catch(e) {
+        document.getElementById('loadingMsg').textContent = '数据加载失败，请确保 data/top_products.json 文件存在';
+        document.getElementById('loadingMsg').style.color = '#ff4444';
+    }
+}
 
-        function getRegionFlag(region) {
-            const flags = {'欧区':'🇪🇺', '美区':'🇺🇸', '拉美':'🌎'};
-            return flags[region] || '';
-        }
+function renderSidebar() {
+    const sidebar = document.getElementById('sidebar-items');
+    let html = '';
+    regions.forEach((r, idx) => {
+        const count = allProducts.filter(p => p.category === currentTab && p.region === r.key).length;
+        if (count === 0) return;
+        html += `<a class="${idx === 0 ? 'active' : ''}" onclick="scrollToRegion('${r.key}')">${r.flag} ${r.key} <span style="font-size:12px;color:#888;">(${count})</span></a>`;
+    });
+    if (html === '') {
+        html = '<a style="color:#666;cursor:default;">暂无数据</a>';
+    }
+    sidebar.innerHTML = html;
+}
 
-        // Tab switching
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentTab = btn.dataset.tab;
-                
-                // Update sidebar
-                const jacketSidebar = document.querySelector('.sidebar-section:not(#shirtSidebar)');
-                if (currentTab === '外套夹克') {
-                    jacketSidebar.style.display = 'block';
-                    document.getElementById('shirtSidebar').style.display = 'none';
-                } else {
-                    jacketSidebar.style.display = 'none';
-                    document.getElementById('shirtSidebar').style.display = 'block';
-                }
-                
-                // Reset active sidebar item
-                document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
-                const firstItem = document.querySelector(currentTab === '外套夹克' ? '.sidebar-section:not(#shirtSidebar) .sidebar-item' : '#shirtSidebar .sidebar-item');
-                if (firstItem) firstItem.classList.add('active');
-                
-                renderProducts();
-            });
+function renderProducts() {
+    const grid = document.getElementById('productGrid');
+    const filtered = allProducts.filter(p => p.category === currentTab);
+    let html = '';
+
+    regions.forEach(region => {
+        const regionProducts = filtered.filter(p => p.region === region.key);
+        if (regionProducts.length === 0) return;
+
+        html += `<div class="region-section" id="region-${region.key}">`;
+        html += `<div class="region-title">${region.flag} ${region.key} <span class="badge">${regionProducts.length}款</span></div>`;
+        html += `<div class="top-product-grid">`;
+
+        regionProducts.forEach(p => {
+            if (!p.imageUrl) return;
+            html += `<div class="top-product-card">`;
+            html += `<div class="top-product-image" onclick="openModal('${p.imageUrl.replace(/'/g, "\\'")}')">`;
+            html += `<img src="${p.imageUrl}" alt="商品图" loading="lazy" onerror="this.parentElement.parentElement.style.display='none'">`;
+            html += `</div>`;
+            html += `</div>`;
         });
 
-        // Sidebar navigation
-        document.querySelectorAll('.sidebar-item').forEach(item => {
-            item.addEventListener('click', () => {
-                document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
-                item.classList.add('active');
-                const region = item.dataset.region;
-                const tab = item.dataset.tab;
-                const target = document.getElementById(`region-${tab}-${region}`);
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
+        html += `</div></div>`;
+    });
 
-        // Modal functions
-        function openModal(url) {
-            currentModalUrl = url;
-            document.getElementById('modalImage').src = url;
-            document.getElementById('imageModal').style.display = 'flex';
-        }
+    grid.innerHTML = html;
+}
 
-        function closeModal() {
-            document.getElementById('imageModal').style.display = 'none';
-        }
+function switchTab(tab) {
+    currentTab = tab;
+    document.querySelectorAll('.top-tab').forEach(t => {
+        t.classList.toggle('active', t.dataset.tab === tab);
+    });
+    renderSidebar();
+    renderProducts();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-        function searchSameProduct() {
-            window.open('https://lens.google.com/uploadbyurl?url=' + encodeURIComponent(currentModalUrl), '_blank');
-        }
+function scrollToRegion(region) {
+    document.querySelectorAll('.top-sidebar a').forEach(a => a.classList.remove('active'));
+    event.target.classList.add('active');
+    const target = document.getElementById(`region-${region}`);
+    if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
 
-        document.getElementById('imageModal').addEventListener('click', (e) => {
-            if (e.target.id === 'imageModal') closeModal();
-        });
+function openModal(url) {
+    currentModalUrl = url;
+    document.getElementById('modalImage').src = url;
+    document.getElementById('imageModal').style.display = 'flex';
+}
 
-        loadData();
-    </script>
+function closeModal() {
+    document.getElementById('imageModal').style.display = 'none';
+}
+
+function searchSameProduct() {
+    window.open('https://lens.google.com/uploadbyurl?url=' + encodeURIComponent(currentModalUrl), '_blank');
+}
+
+document.getElementById('imageModal').addEventListener('click', function(e) {
+    if (e.target.id === 'imageModal') closeModal();
+});
+
+loadData();
+</script>
 </body>
 </html>

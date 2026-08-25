@@ -284,9 +284,9 @@ a:hover { color: var(--primary-hover); }
 /* === Top Products (去年热销) === */
 .top-product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-    gap: 8px;
-    padding: 10px 0;
+    grid-template-columns: repeat(15, 1fr);
+    gap: 6px;
+    padding: 0;
 }
 .top-product-card {
     overflow: hidden;
@@ -296,7 +296,7 @@ a:hover { color: var(--primary-hover); }
     transition: transform 0.2s, box-shadow 0.2s;
 }
 .top-product-card:hover {
-    transform: scale(1.05);
+    transform: scale(1.08);
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     z-index: 5;
     position: relative;
@@ -311,10 +311,15 @@ a:hover { color: var(--primary-hover); }
     height: 100%;
     object-fit: cover;
 }
+@media (max-width: 1200px) {
+    .top-product-grid {
+        grid-template-columns: repeat(10, 1fr);
+    }
+}
 @media (max-width: 768px) {
     .top-product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-        gap: 6px;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 4px;
     }
 }
 
