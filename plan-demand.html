@@ -44,23 +44,19 @@
 
       <div class="pdf-section" id="pdf-jacket-1">
         <h3>都市基础风</h3>
-        <div style="margin-bottom:8px;"><a href="assets/pdf/jacket-urban-basic.pdf" target="_blank" class="btn btn-primary" style="font-size:13px;padding:6px 14px;">📥 新窗口打开</a></div>
-        <div class="pdf-canvas-container" data-pdf="assets/pdf/jacket-urban-basic.pdf"></div>
+        <iframe class="pdf-viewer" src="assets/pdf/jacket-urban-basic.pdf#view=FitH&zoom=100"></iframe>
       </div>
       <div class="pdf-section" id="pdf-jacket-2">
         <h3>工装</h3>
-        <div style="margin-bottom:8px;"><a href="assets/pdf/jacket-workwear.pdf" target="_blank" class="btn btn-primary" style="font-size:13px;padding:6px 14px;">📥 新窗口打开</a></div>
-        <div class="pdf-canvas-container" data-pdf="assets/pdf/jacket-workwear.pdf"></div>
+        <iframe class="pdf-viewer" src="assets/pdf/jacket-workwear.pdf#view=FitH&zoom=100"></iframe>
       </div>
       <div class="pdf-section" id="pdf-jacket-3">
         <h3>皮衣夹克</h3>
-        <div style="margin-bottom:8px;"><a href="assets/pdf/jacket-leather.pdf" target="_blank" class="btn btn-primary" style="font-size:13px;padding:6px 14px;">📥 新窗口打开</a></div>
-        <div class="pdf-canvas-container" data-pdf="assets/pdf/jacket-leather.pdf"></div>
+        <iframe class="pdf-viewer" src="assets/pdf/jacket-leather.pdf#view=FitH&zoom=100"></iframe>
       </div>
       <div class="pdf-section" id="pdf-jacket-4">
         <h3>户外机能风</h3>
-        <div style="margin-bottom:8px;"><a href="assets/pdf/jacket-outdoor-tech.pdf" target="_blank" class="btn btn-primary" style="font-size:13px;padding:6px 14px;">📥 新窗口打开</a></div>
-        <div class="pdf-canvas-container" data-pdf="assets/pdf/jacket-outdoor-tech.pdf"></div>
+        <iframe class="pdf-viewer" src="assets/pdf/jacket-outdoor-tech.pdf#view=FitH&zoom=100"></iframe>
       </div>
     </div>
 
@@ -74,18 +70,15 @@
 
       <div class="pdf-section" id="pdf-shirt-1">
         <h3>工装衬衫</h3>
-        <div style="margin-bottom:8px;"><a href="assets/pdf/shirt-workwear.pdf" target="_blank" class="btn btn-primary" style="font-size:13px;padding:6px 14px;">📥 新窗口打开</a></div>
-        <div class="pdf-canvas-container" data-pdf="assets/pdf/shirt-workwear.pdf"></div>
+        <iframe class="pdf-viewer" src="assets/pdf/shirt-workwear.pdf#view=FitH&zoom=100"></iframe>
       </div>
       <div class="pdf-section" id="pdf-shirt-2">
         <h3>休闲衬衫</h3>
-        <div style="margin-bottom:8px;"><a href="assets/pdf/shirt-casual.pdf" target="_blank" class="btn btn-primary" style="font-size:13px;padding:6px 14px;">📥 新窗口打开</a></div>
-        <div class="pdf-canvas-container" data-pdf="assets/pdf/shirt-casual.pdf"></div>
+        <iframe class="pdf-viewer" src="assets/pdf/shirt-casual.pdf#view=FitH&zoom=100"></iframe>
       </div>
       <div class="pdf-section" id="pdf-shirt-3">
         <h3>商务衬衫</h3>
-        <div style="margin-bottom:8px;"><a href="assets/pdf/shirt-business.pdf" target="_blank" class="btn btn-primary" style="font-size:13px;padding:6px 14px;">📥 新窗口打开</a></div>
-        <div class="pdf-canvas-container" data-pdf="assets/pdf/shirt-business.pdf"></div>
+        <iframe class="pdf-viewer" src="assets/pdf/shirt-business.pdf#view=FitH&zoom=100"></iframe>
       </div>
     </div>
 
@@ -100,81 +93,13 @@
 
 </main>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
-// PDF.js 渲染 - 解决 GitHub Pages 不支持 iframe 嵌入 PDF 的问题
-if(window.pdfjsLib) {
-  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-}
-
-var loadedPDFs = {};
-
-function renderPDF(container) {
-  if(!window.pdfjsLib) return;
-  var pdfPath = container.dataset.pdf;
-  if(!pdfPath || loadedPDFs[pdfPath]) return;
-  loadedPDFs[pdfPath] = true;
-
-  container.innerHTML = '<div style="text-align:center;padding:40px;color:#777;">PDF文档加载中...</div>';
-  container.style.width = '100%';
-  container.style.minHeight = '400px';
-  container.style.border = '1px solid #e0e0e0';
-  container.style.borderRadius = '10px';
-  container.style.overflow = 'hidden';
-  container.style.background = '#f5f5f5';
-
-  var loadingTask = pdfjsLib.getDocument(pdfPath);
-  loadingTask.promise.then(function(pdf) {
-    container.innerHTML = '';
-    var totalPages = pdf.numPages;
-
-    function renderPage(num) {
-      if(num > totalPages) return;
-      pdf.getPage(num).then(function(page) {
-        var canvas = document.createElement('canvas');
-        container.appendChild(canvas);
-
-        var containerWidth = container.clientWidth;
-        var viewport = page.getViewport({ scale: 1 });
-        var scale = containerWidth / viewport.width;
-        var scaledViewport = page.getViewport({ scale: scale });
-
-        var context = canvas.getContext('2d');
-        canvas.width = scaledViewport.width;
-        canvas.height = scaledViewport.height;
-        canvas.style.display = 'block';
-        canvas.style.marginBottom = '4px';
-
-        page.render({ canvasContext: context, viewport: scaledViewport }).promise.then(function() {
-          renderPage(num + 1);
-        });
-      });
-    }
-    renderPage(1);
-  }).catch(function(error) {
-    container.innerHTML = '<div style="text-align:center;padding:40px;color:#d93025;">PDF加载失败，请点击上方按钮下载查看</div>';
-  });
-}
-
-// 初始加载可见的PDF
-window.addEventListener('DOMContentLoaded', function() {
-  var containers = document.querySelectorAll('.pdf-canvas-container');
-  containers.forEach(function(c) { renderPDF(c); });
-});
-
 function switchTab(tab) {
   document.querySelectorAll('.plan-tab').forEach(function(t) {
     t.classList.toggle('active', t.dataset.tab === tab);
   });
   document.getElementById('panel-jacket').classList.toggle('hidden', tab !== 'jacket');
   document.getElementById('panel-shirt').classList.toggle('hidden', tab !== 'shirt');
-  // 切换面板后加载未加载的PDF
-  setTimeout(function() {
-    var panel = document.getElementById('panel-' + tab);
-    if(panel) {
-      panel.querySelectorAll('.pdf-canvas-container').forEach(function(c) { renderPDF(c); });
-    }
-  }, 100);
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
